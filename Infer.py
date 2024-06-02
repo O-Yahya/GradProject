@@ -47,30 +47,35 @@ def read_infer_json(sourcePath):
 vuls = read_infer_json(project_path)
 
 def read_infer_text(sourcePath):
-    path = sourcePath + "/infer-out/report.txt"
+    path = os.path.join(sourcePath, "infer-out/report.txt")
     with open(path, 'r') as file:
         report_content = file.read()
+
+    print("Report content:")
+    print(report_content)  # Debug: Print the contents of the report.txt file
     
     # Regular expression to capture the issues and their details
     pattern = re.compile(
-        r"^#(\d+)\n(.*?):(\d+): error: (.*?)\n((?:\s*\d+\.\s+.*?\n)+)",
-        re.MULTILINE
+        r"#(\d+)\n(.*?):(\d+): error: (.*?)\n(.*?)\n\n",
+        re.DOTALL
     )
     
     matches = pattern.findall(report_content)
+    print(f"Matches found: {len(matches)}")  # Debug: Print the number of matches found
 
+    i = 0
     for match in matches:
         issue_id, file_path, line_number, issue_type, code_snippets = match
-        
+        print(f"Match: {match}")  # Debug: Print each match
+
         # Process the code snippets
         code_snippet_lines = re.findall(r"^\s*(\d+)\.\s+(.*?)$", code_snippets, re.MULTILINE)
         code_snippet = "\n".join(f"{line}. {snippet}" for line, snippet in code_snippet_lines)
         
+        vuls[i].code_snippet = code_snippet
+        i = i + 1
         # Find corresponding vulnerability in vuls list and update the code_snippet
-        for vul in vuls:
-            if vul.file.strip() == file_path.strip() and vul.type == issue_type.strip():
-                vul.code_snippet = code_snippet.strip()
-                break
+
 
     
 
