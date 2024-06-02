@@ -1,0 +1,12 @@
+#0
+VulnerableApp.java:15: error: Null Dereference
+  object `s` last assigned on line 14 could be null and is dereferenced at line 15.
+  13.       int test() {
+  14.           String s = null;
+  15. >         return s.length();
+  16.       }
+  17.       // Null pointer dereference
+
+Found 1 issue
+          Issue Type(ISSUED_TYPE_ID): #
+  Null Dereference(NULL_DEREFERENCE): 1

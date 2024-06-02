@@ -1,0 +1,31 @@
+#0
+src/main/java/com/example/Main.java:7: error: Null Dereference
+  object `s` last assigned on line 6 could be null and is dereferenced at line 7.
+  5.       int test() {
+  6.           String s = null;
+  7. >         return s.length();
+  8.       }
+  9.   
+
+#1
+src/main/java/com/example/VulnerableApp.java:40: error: Null Dereference
+  object `str` last assigned on line 39 could be null and is dereferenced at line 40.
+  38.       public void nullPointerDereference() {
+  39.           String str = null;
+  40. >         if (str.equals("test")) { // Null pointer dereference
+  41.               System.out.println("This is never reached");
+  42.           }
+
+#2
+src/main/java/com/example/VulnerableApp.java:48: error: Resource Leak
+  resource of type `java.io.FileInputStream` acquired by call to `FileInputStream(...)` at line 48 is not released after line 48.
+  46.       public void resourceLeak() {
+  47.           try {
+  48. >             java.io.FileInputStream fis = new java.io.FileInputStream("test.txt");
+  49.               // Forgetting to close the file
+  50.           } catch (java.io.IOException e) {
+
+Found 3 issues
+          Issue Type(ISSUED_TYPE_ID): #
+  Null Dereference(NULL_DEREFERENCE): 2
+        Resource Leak(RESOURCE_LEAK): 1
