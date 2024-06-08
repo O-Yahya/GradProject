@@ -21,8 +21,9 @@ class Vulnerability:
 
 def run_infer_scan(sourcePath, build_tool):
     if build_tool == "Maven":
-        # command = "infer run -- mvn clean install"
         command = ["infer", "run", "--", "mvn", "clean", "install"]
+    if build_tool == "CMake":
+        command = ["infer", "run", "--", "make"]
     os.chdir(sourcePath)
     
     res = subprocess.run(command, capture_output=True, text=True)
