@@ -24,6 +24,9 @@ def run_infer_scan(sourcePath, build_tool):
         command = ["infer", "run", "--", "mvn", "clean", "install"]
     if build_tool == "CMake":
         command = ["infer", "run", "--", "make"]
+    if build_tool == "C":
+        command = ["infer", "run", "--", "gcc", "-c", "error.c"]
+
     os.chdir(sourcePath)
     
     res = subprocess.run(command, capture_output=True, text=True)
@@ -45,15 +48,14 @@ def read_infer_json(sourcePath):
 
     return vulnerabilities
 
-vuls = read_infer_json(project_path)
 
 def read_infer_text(sourcePath):
     path = os.path.join(sourcePath, "infer-out/report.txt")
     with open(path, 'r') as file:
         report_content = file.read()
 
-    print("Report content:")
-    print(report_content)  # Debug: Print the contents of the report.txt file
+    #print("Report content:")
+    #print(report_content)  # Debug: Print the contents of the report.txt file
     
     # Regular expression to capture the issues and their details
     pattern = re.compile(
@@ -62,12 +64,12 @@ def read_infer_text(sourcePath):
     )
     
     matches = pattern.findall(report_content)
-    print(f"Matches found: {len(matches)}")  # Debug: Print the number of matches found
+    #print(f"Matches found: {len(matches)}")  # Debug: Print the number of matches found
 
     i = 0
     for match in matches:
         issue_id, file_path, line_number, issue_type, code_snippets = match
-        print(f"Match: {match}")  # Debug: Print each match
+        #print(f"Match: {match}")  # Debug: Print each match
 
         # Process the code snippets
         code_snippet_lines = re.findall(r"^\s*(\d+)\.\s+(.*?)$", code_snippets, re.MULTILINE)
@@ -75,16 +77,10 @@ def read_infer_text(sourcePath):
         
         vuls[i].code_snippet = code_snippet
         i = i + 1
-        # Find corresponding vulnerability in vuls list and update the code_snippet
 
-
-    
-
-
-
-
-# run_infer_scan(project_path, build_tool)
-
+run_infer_scan(project_path, build_tool)
+vuls = read_infer_json(project_path)
 read_infer_text(project_path)
+
 for vul in vuls:
     vul.show()
