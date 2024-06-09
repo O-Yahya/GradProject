@@ -25,7 +25,8 @@ def run_infer_scan(sourcePath, build_tool):
     if build_tool == "CMake":
         command = ["infer", "run", "--", "make"]
     if build_tool == "C":
-        command = ["infer", "run", "--", "gcc", "-c", "error.c"]
+        file_name = input(print("Enter C file name: "))
+        command = ["infer", "run", "--", "gcc", "-c", file_name]
 
     os.chdir(sourcePath)
     
@@ -78,9 +79,24 @@ def read_infer_text(sourcePath):
         vuls[i].code_snippet = code_snippet
         i = i + 1
 
-run_infer_scan(project_path, build_tool)
-vuls = read_infer_json(project_path)
-read_infer_text(project_path)
 
-for vul in vuls:
-    vul.show()
+def read_bug_traces(sourcePath):
+    command = ["infer", "explore", "--html"]
+    path = os.path.join(sourcePath, "infer-out/report.html/traces")
+    
+    for filename in os.listdir(path):
+        trace_path = os.path.join(path, filename)
+        
+        with open(trace_path, 'r') as trace_file:
+            trace_content = trace_file.read()
+            
+
+
+read_bug_traces(project_path)
+
+#run_infer_scan(project_path, build_tool)
+#vuls = read_infer_json(project_path)
+#read_infer_text(project_path)
+
+#for vul in vuls:
+    #vul.show()

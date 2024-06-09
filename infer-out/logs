@@ -112,3 +112,80 @@
 [51418][      debug]   top_heap_words: 1157632
 [51418][      debug]   
 [51462][      debug] Sqlite write daemon: terminating
+
+[53364][      phase] ============================================================
+[53364][      phase] = New infer execution begins
+[53364][      phase] ============================================================
+[53365][      debug] Sqlite write daemon: starting up
+[53365][      debug] Sqlite write daemon: set up complete, waiting for connections
+[53364][      phase] ============================================================
+[53364][      phase] = New infer execution begins
+[53364][      phase] ============================================================
+[53364][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject
+[53364][environment] No .inferconfig file found
+[53364][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject
+[53364][environment] INFER_ARGS =   @/tmp/args.tmp.40884b
+[53364][environment] command line arguments:   infer explore
+[53364][environment] Available memory at startup: 1557 MB
+[53364][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[53364][     result] #0
+[53364][     result] error.c:14: error: Null Dereference
+[53364][     result]   pointer `ptr` last assigned on line 13 could be null and is dereferenced by call to `strcmp()` at line 14, column 9.
+[53364][     result] #1
+[53364][     result] error.c:22: error: Resource Leak
+[53364][     result]   resource of type `_IO_FILE` acquired by call to `fopen()` at line 21, column 18 is not released after line 22, column 5.
+[53364][     result] 
+[53364][     result] Select report to display (0-1) (default: 0): 
+[53364][     result] #0
+[53364][     result] error.c:14: error: Null Dereference
+[53364][     result]   pointer `ptr` last assigned on line 13 could be null and is dereferenced by call to `strcmp()` at line 14, column 9.
+[53364][     result] 
+[53364][     result] error.c:12:1: start of procedure nullPointerDereference()
+[53364][     result] 10. 
+[53364][     result] 11. // Function to demonstrate null pointer dereference vulnerability
+[53364][     result] 12. void nullPointerDereference() {
+[53364][     result]     ^
+[53364][     result] 13.     char *ptr = NULL;
+[53364][     result] 14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+[53364][     result] 
+[53364][     result] error.c:13:5: 
+[53364][     result] 11. // Function to demonstrate null pointer dereference vulnerability
+[53364][     result] 12. void nullPointerDereference() {
+[53364][     result] 13.     char *ptr = NULL;
+[53364][     result]         ^
+[53364][     result] 14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+[53364][     result] 15.         printf("This is never reached\n");
+[53364][     result] 
+[53364][     result] error.c:14:9: 
+[53364][     result] 12. void nullPointerDereference() {
+[53364][     result] 13.     char *ptr = NULL;
+[53364][     result] 14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+[53364][     result]             ^
+[53364][     result] 15.         printf("This is never reached\n");
+[53364][     result] 16.     }
+[53365][      debug] Sqlite write daemon: terminating
+[53364][environment] Scheduler: file
+[53364][environment] Cores used: 4
+[53364][environment] 
+[53732][      phase] ============================================================
+[53732][      phase] = New infer execution begins
+[53732][      phase] ============================================================
+[53733][      debug] Sqlite write daemon: starting up
+[53733][      debug] Sqlite write daemon: set up complete, waiting for connections
+[53732][      phase] ============================================================
+[53732][      phase] = New infer execution begins
+[53732][      phase] ============================================================
+[53732][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject
+[53732][environment] No .inferconfig file found
+[53732][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject
+[53732][environment] INFER_ARGS =   @/tmp/args.tmp.e44f54
+[53732][environment] command line arguments:   infer explore --html
+[53732][environment] Available memory at startup: 1568 MB
+[53732][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[53732][   progress] Found GitHub project 'O-Yahya/GradProject.git' at root '/home/omaryahya/Desktop/GradProject/GradProject', commit 'a3d0a56f2760480e552f68ffa192d7c0af3a228a'
+[53732][   progress] 
+[53732][     result] Saved HTML report in '/home/omaryahya/Desktop/GradProject/GradProject/infer-out/report.html/index.html'
+[53733][      debug] Sqlite write daemon: terminating
+[53732][environment] Scheduler: file
+[53732][environment] Cores used: 4
+[53732][environment] 

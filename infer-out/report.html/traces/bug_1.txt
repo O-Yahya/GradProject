@@ -1,0 +1,35 @@
+#1
+error.c:22: error: Resource Leak
+  resource of type `_IO_FILE` acquired by call to `fopen()` at line 21, column 18 is not released after line 22, column 5.
+
+error.c:20:1: start of procedure resourceLeak()
+18. 
+19. // Function to demonstrate resource leak vulnerability
+20. void resourceLeak() {
+    ^
+21.     FILE *file = fopen("test.txt", "r");
+22.     if (file == NULL) {
+
+error.c:21:5: 
+19. // Function to demonstrate resource leak vulnerability
+20. void resourceLeak() {
+21.     FILE *file = fopen("test.txt", "r");
+        ^
+22.     if (file == NULL) {
+23.         printf("Failed to open file\n");
+
+error.c:22:9: Taking false branch
+20. void resourceLeak() {
+21.     FILE *file = fopen("test.txt", "r");
+22.     if (file == NULL) {
+            ^
+23.         printf("Failed to open file\n");
+24.         return;
+
+error.c:22:5: 
+20. void resourceLeak() {
+21.     FILE *file = fopen("test.txt", "r");
+22.     if (file == NULL) {
+        ^
+23.         printf("Failed to open file\n");
+24.         return;

@@ -1,0 +1,27 @@
+#0
+error.c:14: error: Null Dereference
+  pointer `ptr` last assigned on line 13 could be null and is dereferenced by call to `strcmp()` at line 14, column 9.
+
+error.c:12:1: start of procedure nullPointerDereference()
+10. 
+11. // Function to demonstrate null pointer dereference vulnerability
+12. void nullPointerDereference() {
+    ^
+13.     char *ptr = NULL;
+14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+
+error.c:13:5: 
+11. // Function to demonstrate null pointer dereference vulnerability
+12. void nullPointerDereference() {
+13.     char *ptr = NULL;
+        ^
+14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+15.         printf("This is never reached\n");
+
+error.c:14:9: 
+12. void nullPointerDereference() {
+13.     char *ptr = NULL;
+14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+            ^
+15.         printf("This is never reached\n");
+16.     }
