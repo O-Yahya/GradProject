@@ -9,14 +9,15 @@ build_tool = input(print("Enter project build tool: "))
 
 
 class Vulnerability:
-    def __init__ (self, type, code_snippet, file, description):
+    def __init__ (self, type, file, description, bug_function, functions):
         self.type = type
-        self.code_snippet = code_snippet
         self.file = file
         self.description = description
+        self.bug_function = bug_function
+        self.functions = functions
     
     def show(self):
-        rep = f'VULNERABILITY Type: {self.type},    Code: {self.code_snippet},  File: {self.file},  Description: {self.description}'
+        rep = f'VULNERABILITY Type: {self.type},  File: {self.file},  Description: {self.description}, Bug_function: {self.bug_function}\n, Functions: {self.functions}\n'
         print(rep + '\n')
 
 def run_infer_scan(sourcePath, build_tool):
@@ -45,7 +46,16 @@ def read_infer_json(sourcePath):
         type = issue.get('bug_type')
         file = issue.get('file')
         desc = issue.get('qualifier')
-        vulnerabilities.append(Vulnerability(type, '', file, desc))
+        bug_function_start_line = issue.get('procedure_start_line')
+        func_name = issue.get('procedure')
+
+        # extracting bug_function code depending on file and function start line
+        file_path = sourcePath + file
+        bug_function = get_bug_function(file_path, bug_function_start_line, func_name)
+
+        vulnerabilities.append(Vulnerability(type, file, desc, bug_function, ''))
+
+    
 
     return vulnerabilities
 
@@ -90,13 +100,44 @@ def read_bug_traces(sourcePath):
         with open(trace_path, 'r') as trace_file:
             trace_content = trace_file.read()
             
+def get_bug_function(file_path, start_line, function_name):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Start reading from the start line
+    code_lines = lines[start_line - 1:]
+    
+    # Identify the function by its name and the starting line
+    function_code = []
+    brace_count = 0
+    in_function = False
+
+    for line in code_lines:
+        # Check for the start of the function
+        if not in_function:
+            # Function name with start_line should be the beginning of the function
+            if re.match(rf"\s*\w[\w\s\*]*\b{function_name}\s*\(", line):
+                in_function = True
+        
+        if in_function:
+            function_code.append(line)
+            brace_count += line.count('{')
+            brace_count -= line.count('}')
+
+            # Check if the function has ended
+            if brace_count == 0:
+                break
+
+    return ''.join(function_code)
 
 
-read_bug_traces(project_path)
 
-#run_infer_scan(project_path, build_tool)
-#vuls = read_infer_json(project_path)
+
+#read_bug_traces(project_path)
+
+run_infer_scan(project_path, build_tool)
+vuls = read_infer_json(project_path)
 #read_infer_text(project_path)
 
-#for vul in vuls:
-    #vul.show()
+for vul in vuls:
+    vul.show()

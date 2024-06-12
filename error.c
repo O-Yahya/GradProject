@@ -18,11 +18,14 @@ void nullPointerDereference() {
 
 // Function to demonstrate resource leak vulnerability
 void resourceLeak() {
+    int x = 5;
+    int v = 7;
     FILE *file = fopen("test.txt", "r");
     if (file == NULL) {
         printf("Failed to open file\n");
         return;
     }
+
     // Forgetting to close the file, causing a resource leak
 }
 

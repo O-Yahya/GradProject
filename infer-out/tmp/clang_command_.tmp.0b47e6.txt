@@ -47,7 +47,7 @@
 "-Wno-ignored-optimization-argument"
 "-Wno-everything"
 "-fdebug-compilation-dir"
-"/home/omaryahya/Desktop"
+"/home/omaryahya/Desktop/GradProject/GradProject"
 "-ferror-limit"
 "19"
 "-fgnuc-version=4.2.1"

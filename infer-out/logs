@@ -1,191 +1,114 @@
-[51418][      debug] Loading models took 1.904s
-[51462][      debug] Sqlite write daemon: starting up
-[51462][      debug] Sqlite write daemon: set up complete, waiting for connections
-[51418][environment] CWD = /home/omaryahya/Desktop
-[51418][environment] No .inferconfig file found
-[51418][environment] Project root = /home/omaryahya/Desktop
-[51418][environment] INFER_ARGS =   @/tmp/args.tmp.0392f0
-[51418][environment] command line arguments:   infer run -- gcc -c error.c
-[51418][environment] Available memory at startup: 1626 MB
-[51418][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
-[51418][environment] Scheduler: file
-[51418][environment] Cores used: 4
-[51418][environment] Infer version v1.1.0
-[51418][environment] Copyright 2009 - present Facebook. All Rights Reserved.
-[51418][environment] 
-[51418][   progress] Capturing in make/cc mode...
-[51418][      debug] 
-[51418][      debug] *** Beginning capture of file /home/omaryahya/Desktop/error.c ***
-[51418][      debug] Loading the following linters files: /home/omaryahya/INFER/lib/infer/infer/bin/../lib/linter_rules/linters.al
-[51418][      debug] Elapsed: 154ms.
-[51418][      debug] GC stats for capture:
-[51418][      debug]   minor_words: 1.6071e+06
-[51418][      debug]   promoted_words: 307407
-[51418][      debug]   major_words: 322848
-[51418][      debug]   minor_collections: 3
-[51418][      debug]   major_collections: 0
-[51418][      debug]   compactions: 0
-[51418][      debug]   top_heap_words: 1006592
-[51418][      debug]   
-[51418][environment] Parallel jobs: 4
-[51418][   progress] Found 1 source file to analyze in /home/omaryahya/Desktop/infer-out
-[51481][   progress] error.c starting
-[51481][   progress] error.c DONE
-[51418][      debug] Backend stats:
-[51418][      debug]   summary_file_try_load= 12
-[51418][      debug]   summary_read_from_disk= 0
-[51418][      debug]   summary_cache_hits= 87 (87%)
-[51418][      debug]   summary_cache_misses= 12
-[51418][      debug]   ondemand_procs_analyzed= 4
-[51418][      debug]   ondemand_local_cache_hits= 33 (80%)
-[51418][      debug]   ondemand_local_cache_misses= 8
-[51418][      debug]   proc_locker_lock_time_user= 0.00000000
-[51418][      debug]   proc_locker_lock_time_sys= 0.00000000
-[51418][      debug]   proc_locker_lock_time_wall= 0.00000000
-[51418][      debug]   proc_locker_unlock_time_user= 0.00000000
-[51418][      debug]   proc_locker_unlock_time_sys= 0.00000000
-[51418][      debug]   proc_locker_unlock_time_wall= 0.00000000
-[51418][      debug]   restart_scheduler_useful_time_user= 0.00000000
-[51418][      debug]   restart_scheduler_useful_time_sys= 0.00000000
-[51418][      debug]   restart_scheduler_useful_time_wall= 0.00000000
-[51418][      debug]   restart_scheduler_total_time_user= 0.00000000
-[51418][      debug]   restart_scheduler_total_time_sys= 0.00000000
-[51418][      debug]   restart_scheduler_total_time_wall= 0.00000000
-[51418][      debug]   
-[51418][      debug] GC stats for backend_stats.gc_stats_add.:
-[51418][      debug]   minor_words: 1.08913e+06
-[51418][      debug]   promoted_words: 22689
-[51418][      debug]   major_words: 36405
-[51418][      debug]   minor_collections: 1
-[51418][      debug]   major_collections: 0
-[51418][      debug]   compactions: 0
-[51418][      debug]   top_heap_words: 4177408
-[51418][      debug]   
-[51418][      debug] GC stats for backend_stats.gc_stats_max.:
-[51418][      debug]   minor_words: 1.08897e+06
-[51418][      debug]   promoted_words: 22689
-[51418][      debug]   major_words: 36405
-[51418][      debug]   minor_collections: 1
-[51418][      debug]   major_collections: 0
-[51418][      debug]   compactions: 0
-[51418][      debug]   top_heap_words: 1157632
-[51418][      debug]   
-[51418][      debug] Average over 4 processes
-[51418][      debug] GC stats for backend_stats.gc_stats_average.:
-[51418][      debug]   minor_words: 272282
-[51418][      debug]   promoted_words: 5672.25
-[51418][      debug]   major_words: 9101.25
-[51418][      debug]   minor_collections: 0
-[51418][      debug]   major_collections: 0
-[51418][      debug]   compactions: 0
-[51418][      debug]   top_heap_words: 1044352
-[51418][      debug]   
-[51418][      debug] Analysis phase finished in 271ms
-[51418][      debug] backend_stats.scheduler_process_analysis_time_user= 0.05766600
-[51418][      debug] backend_stats.scheduler_process_analysis_time_sys= 0.04726800
-[51418][      debug] backend_stats.scheduler_process_analysis_time_wall= 0.27104678
-[51418][      debug] GC stats for analysis_scheduler:
-[51418][      debug]   minor_words: 12343
-[51418][      debug]   promoted_words: 19653
-[51418][      debug]   major_words: 28359
-[51418][      debug]   minor_collections: 1
-[51418][      debug]   major_collections: 2
-[51418][      debug]   compactions: 1
-[51418][      debug]   top_heap_words: 1157632
-[51418][      debug]   
-[51418][      debug] GC stats for report:
-[51418][      debug]   minor_words: 34128
-[51418][      debug]   promoted_words: 0
-[51418][      debug]   major_words: 2713
-[51418][      debug]   minor_collections: 0
-[51418][      debug]   major_collections: 0
-[51418][      debug]   compactions: 0
-[51418][      debug]   top_heap_words: 1157632
-[51418][      debug]   
-[51418][      debug] GC stats for main_process_full:
-[51418][      debug]   minor_words: 3.32769e+06
-[51418][      debug]   promoted_words: 495210
-[51418][      debug]   major_words: 1.04811e+06
-[51418][      debug]   minor_collections: 14
-[51418][      debug]   major_collections: 5
-[51418][      debug]   compactions: 2
-[51418][      debug]   top_heap_words: 1157632
-[51418][      debug]   
-[51462][      debug] Sqlite write daemon: terminating
-
-[53364][      phase] ============================================================
-[53364][      phase] = New infer execution begins
-[53364][      phase] ============================================================
-[53365][      debug] Sqlite write daemon: starting up
-[53365][      debug] Sqlite write daemon: set up complete, waiting for connections
-[53364][      phase] ============================================================
-[53364][      phase] = New infer execution begins
-[53364][      phase] ============================================================
-[53364][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject
-[53364][environment] No .inferconfig file found
-[53364][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject
-[53364][environment] INFER_ARGS =   @/tmp/args.tmp.40884b
-[53364][environment] command line arguments:   infer explore
-[53364][environment] Available memory at startup: 1557 MB
-[53364][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
-[53364][     result] #0
-[53364][     result] error.c:14: error: Null Dereference
-[53364][     result]   pointer `ptr` last assigned on line 13 could be null and is dereferenced by call to `strcmp()` at line 14, column 9.
-[53364][     result] #1
-[53364][     result] error.c:22: error: Resource Leak
-[53364][     result]   resource of type `_IO_FILE` acquired by call to `fopen()` at line 21, column 18 is not released after line 22, column 5.
-[53364][     result] 
-[53364][     result] Select report to display (0-1) (default: 0): 
-[53364][     result] #0
-[53364][     result] error.c:14: error: Null Dereference
-[53364][     result]   pointer `ptr` last assigned on line 13 could be null and is dereferenced by call to `strcmp()` at line 14, column 9.
-[53364][     result] 
-[53364][     result] error.c:12:1: start of procedure nullPointerDereference()
-[53364][     result] 10. 
-[53364][     result] 11. // Function to demonstrate null pointer dereference vulnerability
-[53364][     result] 12. void nullPointerDereference() {
-[53364][     result]     ^
-[53364][     result] 13.     char *ptr = NULL;
-[53364][     result] 14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
-[53364][     result] 
-[53364][     result] error.c:13:5: 
-[53364][     result] 11. // Function to demonstrate null pointer dereference vulnerability
-[53364][     result] 12. void nullPointerDereference() {
-[53364][     result] 13.     char *ptr = NULL;
-[53364][     result]         ^
-[53364][     result] 14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
-[53364][     result] 15.         printf("This is never reached\n");
-[53364][     result] 
-[53364][     result] error.c:14:9: 
-[53364][     result] 12. void nullPointerDereference() {
-[53364][     result] 13.     char *ptr = NULL;
-[53364][     result] 14.     if (strcmp(ptr, "test") == 0) { // Null pointer dereference
-[53364][     result]             ^
-[53364][     result] 15.         printf("This is never reached\n");
-[53364][     result] 16.     }
-[53365][      debug] Sqlite write daemon: terminating
-[53364][environment] Scheduler: file
-[53364][environment] Cores used: 4
-[53364][environment] 
-[53732][      phase] ============================================================
-[53732][      phase] = New infer execution begins
-[53732][      phase] ============================================================
-[53733][      debug] Sqlite write daemon: starting up
-[53733][      debug] Sqlite write daemon: set up complete, waiting for connections
-[53732][      phase] ============================================================
-[53732][      phase] = New infer execution begins
-[53732][      phase] ============================================================
-[53732][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject
-[53732][environment] No .inferconfig file found
-[53732][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject
-[53732][environment] INFER_ARGS =   @/tmp/args.tmp.e44f54
-[53732][environment] command line arguments:   infer explore --html
-[53732][environment] Available memory at startup: 1568 MB
-[53732][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
-[53732][   progress] Found GitHub project 'O-Yahya/GradProject.git' at root '/home/omaryahya/Desktop/GradProject/GradProject', commit 'a3d0a56f2760480e552f68ffa192d7c0af3a228a'
-[53732][   progress] 
-[53732][     result] Saved HTML report in '/home/omaryahya/Desktop/GradProject/GradProject/infer-out/report.html/index.html'
-[53733][      debug] Sqlite write daemon: terminating
-[53732][environment] Scheduler: file
-[53732][environment] Cores used: 4
-[53732][environment] 
+[16543][      debug] Loading models took 465ms
+[16585][      debug] Sqlite write daemon: starting up
+[16585][      debug] Sqlite write daemon: set up complete, waiting for connections
+[16543][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject
+[16543][environment] No .inferconfig file found
+[16543][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject
+[16543][environment] INFER_ARGS =   @/tmp/args.tmp.0f928f
+[16543][environment] command line arguments:   infer run -- gcc -c error.c
+[16543][environment] Available memory at startup: 1548 MB
+[16543][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[16543][environment] Scheduler: file
+[16543][environment] Cores used: 4
+[16543][environment] Infer version v1.1.0
+[16543][environment] Copyright 2009 - present Facebook. All Rights Reserved.
+[16543][environment] 
+[16543][   progress] Capturing in make/cc mode...
+[16543][      debug] 
+[16543][      debug] *** Beginning capture of file /home/omaryahya/Desktop/GradProject/GradProject/error.c ***
+[16543][      debug] Loading the following linters files: /home/omaryahya/INFER/lib/infer/infer/bin/../lib/linter_rules/linters.al
+[16543][      debug] Elapsed: 1.889s.
+[16543][      debug] GC stats for capture:
+[16543][      debug]   minor_words: 1.85064e+06
+[16543][      debug]   promoted_words: 307725
+[16543][      debug]   major_words: 323166
+[16543][      debug]   minor_collections: 3
+[16543][      debug]   major_collections: 0
+[16543][      debug]   compactions: 0
+[16543][      debug]   top_heap_words: 1006592
+[16543][      debug]   
+[16543][environment] Parallel jobs: 4
+[16543][   progress] Found 1 source file to analyze in /home/omaryahya/Desktop/GradProject/GradProject/infer-out
+[16644][   progress] error.c starting
+[16644][   progress] error.c DONE
+[16543][      debug] Backend stats:
+[16543][      debug]   summary_file_try_load= 12
+[16543][      debug]   summary_read_from_disk= 0
+[16543][      debug]   summary_cache_hits= 87 (87%)
+[16543][      debug]   summary_cache_misses= 12
+[16543][      debug]   ondemand_procs_analyzed= 4
+[16543][      debug]   ondemand_local_cache_hits= 33 (80%)
+[16543][      debug]   ondemand_local_cache_misses= 8
+[16543][      debug]   proc_locker_lock_time_user= 0.00000000
+[16543][      debug]   proc_locker_lock_time_sys= 0.00000000
+[16543][      debug]   proc_locker_lock_time_wall= 0.00000000
+[16543][      debug]   proc_locker_unlock_time_user= 0.00000000
+[16543][      debug]   proc_locker_unlock_time_sys= 0.00000000
+[16543][      debug]   proc_locker_unlock_time_wall= 0.00000000
+[16543][      debug]   restart_scheduler_useful_time_user= 0.00000000
+[16543][      debug]   restart_scheduler_useful_time_sys= 0.00000000
+[16543][      debug]   restart_scheduler_useful_time_wall= 0.00000000
+[16543][      debug]   restart_scheduler_total_time_user= 0.00000000
+[16543][      debug]   restart_scheduler_total_time_sys= 0.00000000
+[16543][      debug]   restart_scheduler_total_time_wall= 0.00000000
+[16543][      debug]   
+[16543][      debug] GC stats for backend_stats.gc_stats_add.:
+[16543][      debug]   minor_words: 1.28898e+06
+[16543][      debug]   promoted_words: 25425
+[16543][      debug]   major_words: 39409
+[16543][      debug]   minor_collections: 1
+[16543][      debug]   major_collections: 0
+[16543][      debug]   compactions: 0
+[16543][      debug]   top_heap_words: 4177408
+[16543][      debug]   
+[16543][      debug] GC stats for backend_stats.gc_stats_max.:
+[16543][      debug]   minor_words: 1.28882e+06
+[16543][      debug]   promoted_words: 25425
+[16543][      debug]   major_words: 39409
+[16543][      debug]   minor_collections: 1
+[16543][      debug]   major_collections: 0
+[16543][      debug]   compactions: 0
+[16543][      debug]   top_heap_words: 1157632
+[16543][      debug]   
+[16543][      debug] Average over 4 processes
+[16543][      debug] GC stats for backend_stats.gc_stats_average.:
+[16543][      debug]   minor_words: 322244
+[16543][      debug]   promoted_words: 6356.25
+[16543][      debug]   major_words: 9852.25
+[16543][      debug]   minor_collections: 0
+[16543][      debug]   major_collections: 0
+[16543][      debug]   compactions: 0
+[16543][      debug]   top_heap_words: 1044352
+[16543][      debug]   
+[16543][      debug] Analysis phase finished in 239ms
+[16543][      debug] backend_stats.scheduler_process_analysis_time_user= 0.03052900
+[16543][      debug] backend_stats.scheduler_process_analysis_time_sys= 0.05728300
+[16543][      debug] backend_stats.scheduler_process_analysis_time_wall= 0.23921167
+[16543][      debug] GC stats for analysis_scheduler:
+[16543][      debug]   minor_words: 12356
+[16543][      debug]   promoted_words: 19923
+[16543][      debug]   major_words: 28629
+[16543][      debug]   minor_collections: 1
+[16543][      debug]   major_collections: 2
+[16543][      debug]   compactions: 1
+[16543][      debug]   top_heap_words: 1157632
+[16543][      debug]   
+[16543][      debug] GC stats for report:
+[16543][      debug]   minor_words: 47649
+[16543][      debug]   promoted_words: 0
+[16543][      debug]   major_words: 2949
+[16543][      debug]   minor_collections: 0
+[16543][      debug]   major_collections: 0
+[16543][      debug]   compactions: 0
+[16543][      debug]   top_heap_words: 1157632
+[16543][      debug]   
+[16543][      debug] GC stats for main_process_full:
+[16543][      debug]   minor_words: 3.5859e+06
+[16543][      debug]   promoted_words: 495805
+[16543][      debug]   major_words: 1.04894e+06
+[16543][      debug]   minor_collections: 14
+[16543][      debug]   major_collections: 5
+[16543][      debug]   compactions: 2
+[16543][      debug]   top_heap_words: 1157632
+[16543][      debug]   
+[16585][      debug] Sqlite write daemon: terminating

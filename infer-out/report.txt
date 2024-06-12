@@ -9,16 +9,37 @@ error.c:14: error: Null Dereference
   16.     }
 
 #1
-error.c:22: error: Resource Leak
-  resource of type `_IO_FILE` acquired by call to `fopen()` at line 21, column 18 is not released after line 22, column 5.
+error.c:22: error: Dead Store
+  The value written to &v (type int) is never used.
   20. void resourceLeak() {
-  21.     FILE *file = fopen("test.txt", "r");
-  22.     if (file == NULL) {
+  21.     int x = 5;
+  22.     int v = 7;
           ^
-  23.         printf("Failed to open file\n");
-  24.         return;
+  23.     FILE *file = fopen("test.txt", "r");
+  24.     if (file == NULL) {
 
-Found 2 issues
+#2
+error.c:21: error: Dead Store
+  The value written to &x (type int) is never used.
+  19. // Function to demonstrate resource leak vulnerability
+  20. void resourceLeak() {
+  21.     int x = 5;
+          ^
+  22.     int v = 7;
+  23.     FILE *file = fopen("test.txt", "r");
+
+#3
+error.c:24: error: Resource Leak
+  resource of type `_IO_FILE` acquired by call to `fopen()` at line 23, column 18 is not released after line 24, column 5.
+  22.     int v = 7;
+  23.     FILE *file = fopen("test.txt", "r");
+  24.     if (file == NULL) {
+          ^
+  25.         printf("Failed to open file\n");
+  26.         return;
+
+Found 4 issues
           Issue Type(ISSUED_TYPE_ID): #
+              Dead Store(DEAD_STORE): 2
         Resource Leak(RESOURCE_LEAK): 1
   Null Dereference(NULL_DEREFERENCE): 1
