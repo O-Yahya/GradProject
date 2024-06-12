@@ -52,8 +52,21 @@ def read_infer_json(sourcePath):
         # extracting bug_function code depending on file and function start line
         file_path = sourcePath + file
         bug_function = get_bug_function(file_path, bug_function_start_line, func_name)
+        
+        # extracting functions_code from bug_trace
+        bug_trace = issue.get('bug_trace', [])
+        bug_functions = set()
 
-        vulnerabilities.append(Vulnerability(type, file, desc, bug_function, ''))
+        for step in bug_trace:
+            file_name = step.get('filename')
+            line_number = step.get('line_number')
+            print(line_number)
+            function_code = get_function_code(file_name, line_number)
+            bug_functions.add(function_code)
+
+        functions_code = '\n\n'.join(bug_functions)
+
+        vulnerabilities.append(Vulnerability(type, file, desc, bug_function, functions_code))
 
     
 
@@ -130,12 +143,37 @@ def get_bug_function(file_path, start_line, function_name):
 
     return ''.join(function_code)
 
+def get_function_code(file_name, line_number):
+    with open(file_name, 'r') as file:
+        lines = file.readlines()
 
+    found = False
+    for i in range(line_number - 1, -1, -1):
+        if re.match(r'^\s*\w[\w\s\*]*\b\w+\s*\(', lines[i]):
+                function_start = i
+                found = True
+                break
+    
+    if found == False:
+        return None
+        
+    function_code = []
+    brace_count = 0
+    in_function = False
+
+    for line in lines[function_start:]:
+        function_code.append(line)
+        brace_count += line.count('{')
+        brace_count -= line.count('}')
+        if brace_count == 0:
+            break
+
+    return ''.join(function_code)
 
 
 #read_bug_traces(project_path)
 
-run_infer_scan(project_path, build_tool)
+#run_infer_scan(project_path, build_tool)
 vuls = read_infer_json(project_path)
 #read_infer_text(project_path)
 
