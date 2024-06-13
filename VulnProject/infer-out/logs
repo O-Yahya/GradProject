@@ -1,0 +1,242 @@
+[17103][      debug] Loading models took 157ms
+[17111][      debug] Sqlite write daemon: starting up
+[17111][      debug] Sqlite write daemon: set up complete, waiting for connections
+[17103][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17103][environment] No .inferconfig file found
+[17103][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17103][environment] INFER_ARGS =   @/tmp/args.tmp.943106
+[17103][environment] command line arguments:   infer run -- make
+[17103][environment] Available memory at startup: 1393 MB
+[17103][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[17103][environment] Scheduler: file
+[17103][environment] Cores used: 4
+[17103][environment] Infer version v1.1.0
+[17103][environment] Copyright 2009 - present Facebook. All Rights Reserved.
+[17103][environment] 
+[17103][   progress] Capturing in make/cc mode...
+[17103][environment] Running command make with env:
+[17103][environment] (Extend((PATH /home/omaryahya/INFER/lib/infer/infer/bin/../lib/wrappers:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin)(INFER_OLD_PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin)))
+[17103][environment] 
+
+[17113][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17113][environment] No .inferconfig file found
+[17113][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17113][environment] INFER_ARGS =   @/tmp/args.tmp.0e0efd
+[17113][environment] command line arguments:   gcc -g -Wall -c main.c -o main.o
+[17113][environment] Available memory at startup: 1359 MB
+[17113][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[17113][      debug] 
+[17113][      debug] *** Beginning capture of file /home/omaryahya/Desktop/GradProject/GradProject/VulnProject/main.c ***
+[17113][      debug] Loading the following linters files: /home/omaryahya/INFER/lib/infer/infer/bin/../lib/linter_rules/linters.al
+[17113][      debug] Elapsed: 150ms.
+[17113][      debug] GC stats for capture:
+[17113][      debug]   minor_words: 902496
+[17113][      debug]   promoted_words: 201969
+[17113][      debug]   major_words: 211700
+[17113][      debug]   minor_collections: 1
+[17113][      debug]   major_collections: 0
+[17113][      debug]   compactions: 0
+[17113][      debug]   top_heap_words: 434176
+[17113][      debug]   
+[17113][      debug] GC stats for main_process_full:
+[17113][      debug]   minor_words: 2.31439e+06
+[17113][      debug]   promoted_words: 370177
+[17113][      debug]   major_words: 400560
+[17113][      debug]   minor_collections: 11
+[17113][      debug]   major_collections: 3
+[17113][      debug]   compactions: 1
+[17113][      debug]   top_heap_words: 434176
+[17113][      debug]   
+[17113][environment] Scheduler: file
+[17113][environment] Cores used: 4
+[17113][environment] 
+[17122][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17122][environment] No .inferconfig file found
+[17122][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17122][environment] INFER_ARGS =   @/tmp/args.tmp.939406
+[17122][environment] command line arguments:   gcc -g -Wall -c utils.c -o utils.o
+[17122][environment] Available memory at startup: 1350 MB
+[17122][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[17122][      debug] 
+[17122][      debug] *** Beginning capture of file /home/omaryahya/Desktop/GradProject/GradProject/VulnProject/utils.c ***
+[17122][      debug] Loading the following linters files: /home/omaryahya/INFER/lib/infer/infer/bin/../lib/linter_rules/linters.al
+[17122][      debug] Elapsed: 138ms.
+[17122][      debug] GC stats for capture:
+[17122][      debug]   minor_words: 1.16496e+06
+[17122][      debug]   promoted_words: 249147
+[17122][      debug]   major_words: 261015
+[17122][      debug]   minor_collections: 3
+[17122][      debug]   major_collections: 0
+[17122][      debug]   compactions: 0
+[17122][      debug]   top_heap_words: 434176
+[17122][      debug]   
+[17122][      debug] GC stats for main_process_full:
+[17122][      debug]   minor_words: 2.57685e+06
+[17122][      debug]   promoted_words: 417355
+[17122][      debug]   major_words: 449875
+[17122][      debug]   minor_collections: 13
+[17122][      debug]   major_collections: 3
+[17122][      debug]   compactions: 1
+[17122][      debug]   top_heap_words: 434176
+[17122][      debug]   
+[17122][environment] Scheduler: file
+[17122][environment] Cores used: 4
+[17122][environment] 
+[17136][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17136][environment] No .inferconfig file found
+[17136][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17136][environment] INFER_ARGS =   @/tmp/args.tmp.2e470b
+[17136][environment] command line arguments:   gcc -g -Wall -c file_operations.c -o
+[17136][environment]                           file_operations.o
+[17136][environment] Available memory at startup: 1393 MB
+[17136][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[17136][      debug] 
+[17136][      debug] *** Beginning capture of file /home/omaryahya/Desktop/GradProject/GradProject/VulnProject/file_operations.c ***
+[17136][      debug] Loading the following linters files: /home/omaryahya/INFER/lib/infer/infer/bin/../lib/linter_rules/linters.al
+[17136][      debug] Elapsed: 96.613ms.
+[17136][      debug] GC stats for capture:
+[17136][      debug]   minor_words: 882524
+[17136][      debug]   promoted_words: 201319
+[17136][      debug]   major_words: 211050
+[17136][      debug]   minor_collections: 1
+[17136][      debug]   major_collections: 0
+[17136][      debug]   compactions: 0
+[17136][      debug]   top_heap_words: 434176
+[17136][      debug]   
+[17136][      debug] GC stats for main_process_full:
+[17136][      debug]   minor_words: 2.29444e+06
+[17136][      debug]   promoted_words: 369534
+[17136][      debug]   major_words: 399917
+[17136][      debug]   minor_collections: 11
+[17136][      debug]   major_collections: 3
+[17136][      debug]   compactions: 1
+[17136][      debug]   top_heap_words: 434176
+[17136][      debug]   
+[17136][environment] Scheduler: file
+[17136][environment] Cores used: 4
+[17136][environment] 
+[17142][environment] CWD = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17142][environment] No .inferconfig file found
+[17142][environment] Project root = /home/omaryahya/Desktop/GradProject/GradProject/VulnProject
+[17142][environment] INFER_ARGS =   @/tmp/args.tmp.1e9187
+[17142][environment] command line arguments:   gcc -o VulnProject main.o utils.o file_operations.o
+[17142][environment] Available memory at startup: 1394 MB
+[17142][environment] Active checkers: self-in-block (C/C++/ObjC), starvation (C/C++/ObjC, Java), uninit (C/C++/ObjC), siof (C/C++/ObjC), dotnet-resource-leak (C#/.Net), racerd (C/C++/ObjC, Java), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java), biabduction (C/C++/ObjC, Java, C#/.Net)
+[17142][      debug] GC stats for capture:
+[17142][      debug]   minor_words: 6501
+[17142][      debug]   promoted_words: 0
+[17142][      debug]   major_words: 0
+[17142][      debug]   minor_collections: 0
+[17142][      debug]   major_collections: 0
+[17142][      debug]   compactions: 0
+[17142][      debug]   top_heap_words: 188416
+[17142][      debug]   
+[17142][      debug] GC stats for main_process_full:
+[17142][      debug]   minor_words: 1.41783e+06
+[17142][      debug]   promoted_words: 168206
+[17142][      debug]   major_words: 188858
+[17142][      debug]   minor_collections: 10
+[17142][      debug]   major_collections: 3
+[17142][      debug]   compactions: 1
+[17142][      debug]   top_heap_words: 188416
+[17142][      debug]   
+[17142][environment] Scheduler: file
+[17142][environment] Cores used: 4
+[17142][environment] [17103][      debug] GC stats for capture:
+[17103][      debug]   minor_words: 935
+[17103][      debug]   promoted_words: 0
+[17103][      debug]   major_words: 0
+[17103][      debug]   minor_collections: 0
+[17103][      debug]   major_collections: 0
+[17103][      debug]   compactions: 0
+[17103][      debug]   top_heap_words: 760832
+[17103][      debug]   
+[17103][environment] Parallel jobs: 4
+[17103][   progress] Found 3 source files to analyze in /home/omaryahya/Desktop/GradProject/GradProject/VulnProject/infer-out
+[17147][   progress] main.c starting
+[17148][   progress] file_operations.c starting
+[17149][   progress] utils.c starting
+[17149][   progress] utils.c DONE
+[17148][   progress] file_operations.c DONE
+[17147][   progress] main.c DONE
+[17103][      debug] Backend stats:
+[17103][      debug]   summary_file_try_load= 22
+[17103][      debug]   summary_read_from_disk= 0
+[17103][      debug]   summary_cache_hits= 160 (87%)
+[17103][      debug]   summary_cache_misses= 22
+[17103][      debug]   ondemand_procs_analyzed= 7
+[17103][      debug]   ondemand_local_cache_hits= 47 (75%)
+[17103][      debug]   ondemand_local_cache_misses= 15
+[17103][      debug]   proc_locker_lock_time_user= 0.00000000
+[17103][      debug]   proc_locker_lock_time_sys= 0.00000000
+[17103][      debug]   proc_locker_lock_time_wall= 0.00000000
+[17103][      debug]   proc_locker_unlock_time_user= 0.00000000
+[17103][      debug]   proc_locker_unlock_time_sys= 0.00000000
+[17103][      debug]   proc_locker_unlock_time_wall= 0.00000000
+[17103][      debug]   restart_scheduler_useful_time_user= 0.00000000
+[17103][      debug]   restart_scheduler_useful_time_sys= 0.00000000
+[17103][      debug]   restart_scheduler_useful_time_wall= 0.00000000
+[17103][      debug]   restart_scheduler_total_time_user= 0.00000000
+[17103][      debug]   restart_scheduler_total_time_sys= 0.00000000
+[17103][      debug]   restart_scheduler_total_time_wall= 0.00000000
+[17103][      debug]   
+[17103][      debug] GC stats for backend_stats.gc_stats_add.:
+[17103][      debug]   minor_words: 4.72784e+06
+[17103][      debug]   promoted_words: 514961
+[17103][      debug]   major_words: 545252
+[17103][      debug]   minor_collections: 4
+[17103][      debug]   major_collections: 0
+[17103][      debug]   compactions: 0
+[17103][      debug]   top_heap_words: 3385856
+[17103][      debug]   
+[17103][      debug] GC stats for backend_stats.gc_stats_max.:
+[17103][      debug]   minor_words: 2.36288e+06
+[17103][      debug]   promoted_words: 174439
+[17103][      debug]   major_words: 191032
+[17103][      debug]   minor_collections: 2
+[17103][      debug]   major_collections: 0
+[17103][      debug]   compactions: 0
+[17103][      debug]   top_heap_words: 875008
+[17103][      debug]   
+[17103][      debug] Average over 4 processes
+[17103][      debug] GC stats for backend_stats.gc_stats_average.:
+[17103][      debug]   minor_words: 1.18196e+06
+[17103][      debug]   promoted_words: 128740
+[17103][      debug]   major_words: 136313
+[17103][      debug]   minor_collections: 1
+[17103][      debug]   major_collections: 0
+[17103][      debug]   compactions: 0
+[17103][      debug]   top_heap_words: 846464
+[17103][      debug]   
+[17103][      debug] Analysis phase finished in 106ms
+[17103][      debug] backend_stats.scheduler_process_analysis_time_user= 0.01880200
+[17103][      debug] backend_stats.scheduler_process_analysis_time_sys= 0.01734200
+[17103][      debug] backend_stats.scheduler_process_analysis_time_wall= 0.10592556
+[17103][      debug] GC stats for analysis_scheduler:
+[17103][      debug]   minor_words: 12534
+[17103][      debug]   promoted_words: 153196
+[17103][      debug]   major_words: 161902
+[17103][      debug]   minor_collections: 1
+[17103][      debug]   major_collections: 2
+[17103][      debug]   compactions: 1
+[17103][      debug]   top_heap_words: 875008
+[17103][      debug]   
+[17103][      debug] GC stats for report:
+[17103][      debug]   minor_words: 155436
+[17103][      debug]   promoted_words: 0
+[17103][      debug]   major_words: 3415
+[17103][      debug]   minor_collections: 0
+[17103][      debug]   major_collections: 0
+[17103][      debug]   compactions: 0
+[17103][      debug]   top_heap_words: 875008
+[17103][      debug]   
+[17103][      debug] GC stats for main_process_full:
+[17103][      debug]   minor_words: 1.84393e+06
+[17103][      debug]   promoted_words: 321344
+[17103][      debug]   major_words: 859506
+[17103][      debug]   minor_collections: 11
+[17103][      debug]   major_collections: 5
+[17103][      debug]   compactions: 2
+[17103][      debug]   top_heap_words: 875008
+[17103][      debug]   
+[17111][      debug] Sqlite write daemon: terminating

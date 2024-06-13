@@ -1,0 +1,24 @@
+#0
+file_operations.c:6: error: Resource Leak
+  resource of type `_IO_FILE` acquired by call to `fopen()` at line 5, column 18 is not released after line 6, column 5.
+  4. void read_file(const char *filename) {
+  5.     FILE *file = fopen(filename, "r");
+  6.     if (file == NULL) {
+         ^
+  7.         printf("Failed to open file\n");
+  8.         return;
+
+#1
+main.c:10: error: Null Dereference
+  pointer `ptr` last assigned on line 9 could be null and is dereferenced by call to `is_valid()` at line 10, column 9.
+   8. 
+   9.     char *ptr = NULL;
+  10.     if (is_valid(ptr)) { // Null pointer dereference vulnerability
+              ^
+  11.         printf("This is never reached\n");
+  12.     }
+
+Found 2 issues
+          Issue Type(ISSUED_TYPE_ID): #
+        Resource Leak(RESOURCE_LEAK): 1
+  Null Dereference(NULL_DEREFERENCE): 1

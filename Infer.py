@@ -21,15 +21,17 @@ class Vulnerability:
         print(rep + '\n')
 
 def run_infer_scan(sourcePath, build_tool):
+    os.chdir(sourcePath)
+
     if build_tool == "Maven":
         command = ["infer", "run", "--", "mvn", "clean", "install"]
-    if build_tool == "CMake":
+    if build_tool == "Make":
+        command = ["make", "clean"]
+        subprocess.run(command)
         command = ["infer", "run", "--", "make"]
     if build_tool == "C":
         file_name = input(print("Enter C file name: "))
         command = ["infer", "run", "--", "gcc", "-c", file_name]
-
-    os.chdir(sourcePath)
     
     res = subprocess.run(command, capture_output=True, text=True)
 
@@ -50,7 +52,7 @@ def read_infer_json(sourcePath):
         func_name = issue.get('procedure')
 
         # extracting bug_function code depending on file and function start line
-        file_path = sourcePath + file
+        file_path = sourcePath + "/" + file
         bug_function = get_bug_function(file_path, bug_function_start_line, func_name)
         
         # extracting functions_code from bug_trace
@@ -173,7 +175,7 @@ def get_function_code(file_name, line_number):
 
 #read_bug_traces(project_path)
 
-#run_infer_scan(project_path, build_tool)
+run_infer_scan(project_path, build_tool)
 vuls = read_infer_json(project_path)
 #read_infer_text(project_path)
 
