@@ -18,7 +18,7 @@ class Vulnerability:
     
     def show(self):
         rep = f'VULNERABILITY Type: {self.type},  File: {self.file},  Description: {self.description}, Bug_function: {self.bug_function}\n, Functions: {self.functions}\n'
-        print(rep + '\n')
+        return rep + '\n'
 
 def run_infer_scan(sourcePath, build_tool):
     os.chdir(sourcePath)
@@ -180,4 +180,7 @@ vuls = read_infer_json(project_path)
 #read_infer_text(project_path)
 
 for vul in vuls:
-    vul.show()
+    os.chdir(project_path)
+    f = open("resultsFile.txt", "a")
+    f.write(vul.show())
+    print(vul.show())
