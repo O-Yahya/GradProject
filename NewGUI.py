@@ -1,5 +1,5 @@
 import customtkinter
-from PIL import Image, ImageTk
+from PIL import Image
 import random
 
 customtkinter.set_appearance_mode("dark")
