@@ -57,7 +57,7 @@ bug_severity_dict = {
     'low': low_severity
 }
 
-def calculate_security_score(vulnerabilities):
+def calculate_security_score(vulnerabilities, bug_severity_dict):
     # security score variable which decreases based on vulnerabilities found
     score = 100
 

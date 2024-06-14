@@ -4,8 +4,8 @@ import os
 import re
 
 
-project_path = input(print("Enter project directory path: "))
-build_tool = input(print("Enter project build tool: "))
+#project_path = input(print("Enter project directory path: "))
+#build_tool = input(print("Enter project build tool: "))
 
 
 class Vulnerability:
@@ -175,12 +175,12 @@ def get_function_code(file_name, line_number):
 
 #read_bug_traces(project_path)
 
-run_infer_scan(project_path, build_tool)
-vuls = read_infer_json(project_path)
+#run_infer_scan(project_path, build_tool)
+#vuls = read_infer_json(project_path)
 #read_infer_text(project_path)
 
-for vul in vuls:
-    os.chdir(project_path)
-    f = open("resultsFile.txt", "a")
-    f.write(vul.show())
-    print(vul.show())
+#for vul in vuls:
+    #os.chdir(project_path)
+    #f = open("resultsFile.txt", "a")
+    #f.write(vul.show())
+    #print(vul.show())
