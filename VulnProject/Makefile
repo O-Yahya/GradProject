@@ -1,18 +1,21 @@
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -Wall -Wextra
 LDFLAGS =
 
-SRCS = main.c utils.c file_operations.c
+SRCS = main.c memory.c fileio.c network.c utility.c utils.c error.c
 OBJS = $(SRCS:.c=.o)
-EXEC = VulnProject
+TARGET = vulnerable_project
 
-all: $(EXEC)
+.PHONY: all clean
 
-$(EXEC): $(OBJS)
-	$(CC) $(LDFAGS) -o $(EXEC) $(OBJS)
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) $^ -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(EXEC) $(OBJS)
+	rm -f $(OBJS) $(TARGET)
+

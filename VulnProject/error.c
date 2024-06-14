@@ -28,10 +28,3 @@ void resourceLeak() {
 
     // Forgetting to close the file, causing a resource leak
 }
-
-int main() {
-    bufferOverflow();
-    nullPointerDereference();
-    resourceLeak();
-    return 0;
-}

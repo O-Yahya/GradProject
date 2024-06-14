@@ -1,27 +1,7 @@
-VULNERABILITY Type: RESOURCE_LEAK,  File: file_operations.c,  Description: resource of type `_IO_FILE` acquired by call to `fopen()` at line 5, column 18 is not released after line 6, column 5., Bug_function: void read_file(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Failed to open file\n");
-        return;
-    }
-    // Vulnerability: forgetting to close the file, causing a resource leak
-    // fclose(file); // Uncommenting this would fix the resource leak
-}
+VULNERABILITY Type: NULL_DEREFERENCE,  File: main.c,  Description: pointer `ptr` last assigned on line 10 could be null and is dereferenced by call to `is_valid()` at line 11, column 9., Bug_function: int main() {
 
-, Functions: void read_file(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Failed to open file\n");
-        return;
-    }
-    // Vulnerability: forgetting to close the file, causing a resource leak
-    // fclose(file); // Uncommenting this would fix the resource leak
-}
-
-
-VULNERABILITY Type: NULL_DEREFERENCE,  File: main.c,  Description: pointer `ptr` last assigned on line 9 could be null and is dereferenced by call to `is_valid()` at line 10, column 9., Bug_function: int main() {
-    char buffer[10];
-    get_input(buffer); // Buffer overflow vulnerability
+    char buffer1[10];
+    get_input(buffer1); // Buffer overflow vulnerability
 
     char *ptr = NULL;
     if (is_valid(ptr)) { // Null pointer dereference vulnerability
@@ -29,30 +9,41 @@ VULNERABILITY Type: NULL_DEREFERENCE,  File: main.c,  Description: pointer `ptr`
     }
 
     read_file("test.txt"); // Resource leak vulnerability
+    // Example usage for memory-related vulnerabilities
+    char* data = NULL;
+    int length = get_string_length(data);
+    printf("Null Pointer Dereference Length: %d\n", length);
+
+    int user_input = 15;
+    buffer_overflow(user_input);
+
+    int* ptr2 = allocate_memory();
+    if (ptr2) {
+        *ptr2= 10;
+        free(ptr2); // Double free vulnerability
+        free(ptr2); // Double free vulnerability
+    }
+
+    // Example usage for file handling vulnerabilities
+    //char* file_data = read_file("example.txt");
+    //if (file_data) {
+    //   printf("File Content: %s\n", file_data);
+    //    free(file_data); // Free allocated memory to prevent leaks
+    //}
+
+    // Example usage for network vulnerabilities
+    char buffer[100];
+    read_from_socket(buffer); // Unchecked return value
+
     return 0;
 }
-
-, Functions:     return strcmp(ptr, "valid") == 0;
-
-
-void get_input(char *buffer) {
+, Functions: void get_input(char *buffer) {
     // Vulnerability: buffer overflow
     strcpy(buffer, "This is a very long string that will overflow the buffer");
 }
 
 
-int main() {
-    char buffer[10];
-    get_input(buffer); // Buffer overflow vulnerability
-
-    char *ptr = NULL;
-    if (is_valid(ptr)) { // Null pointer dereference vulnerability
-        printf("This is never reached\n");
-    }
-
-    read_file("test.txt"); // Resource leak vulnerability
-    return 0;
-}
+    return strcmp(ptr, "valid") == 0;
 
 
 int is_valid(char *ptr) {
@@ -61,58 +52,10 @@ int is_valid(char *ptr) {
 }
 
 
-VULNERABILITY Type: RESOURCE_LEAK,  File: file_operations.c,  Description: resource of type `_IO_FILE` acquired by call to `fopen()` at line 5, column 18 is not released after line 6, column 5., Bug_function: void read_file(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Failed to open file\n");
-        return;
-    }
-    // Vulnerability: forgetting to close the file, causing a resource leak
-    // fclose(file); // Uncommenting this would fix the resource leak
-}
-
-, Functions: void read_file(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Failed to open file\n");
-        return;
-    }
-    // Vulnerability: forgetting to close the file, causing a resource leak
-    // fclose(file); // Uncommenting this would fix the resource leak
-}
-
-
-VULNERABILITY Type: NULL_DEREFERENCE,  File: main.c,  Description: pointer `ptr` last assigned on line 9 could be null and is dereferenced by call to `is_valid()` at line 10, column 9., Bug_function: int main() {
-    char buffer[10];
-    get_input(buffer); // Buffer overflow vulnerability
-
-    char *ptr = NULL;
-    if (is_valid(ptr)) { // Null pointer dereference vulnerability
-        printf("This is never reached\n");
-    }
-
-    read_file("test.txt"); // Resource leak vulnerability
-    return 0;
-}
-
-, Functions:     return strcmp(ptr, "valid") == 0;
-
-
-int is_valid(char *ptr) {
-    // Vulnerability: null pointer dereference
-    return strcmp(ptr, "valid") == 0;
-}
-
-
-void get_input(char *buffer) {
-    // Vulnerability: buffer overflow
-    strcpy(buffer, "This is a very long string that will overflow the buffer");
-}
-
-
 int main() {
-    char buffer[10];
-    get_input(buffer); // Buffer overflow vulnerability
+
+    char buffer1[10];
+    get_input(buffer1); // Buffer overflow vulnerability
 
     char *ptr = NULL;
     if (is_valid(ptr)) { // Null pointer dereference vulnerability
@@ -120,7 +63,135 @@ int main() {
     }
 
     read_file("test.txt"); // Resource leak vulnerability
+    // Example usage for memory-related vulnerabilities
+    char* data = NULL;
+    int length = get_string_length(data);
+    printf("Null Pointer Dereference Length: %d\n", length);
+
+    int user_input = 15;
+    buffer_overflow(user_input);
+
+    int* ptr2 = allocate_memory();
+    if (ptr2) {
+        *ptr2= 10;
+        free(ptr2); // Double free vulnerability
+        free(ptr2); // Double free vulnerability
+    }
+
+    // Example usage for file handling vulnerabilities
+    //char* file_data = read_file("example.txt");
+    //if (file_data) {
+    //   printf("File Content: %s\n", file_data);
+    //    free(file_data); // Free allocated memory to prevent leaks
+    //}
+
+    // Example usage for network vulnerabilities
+    char buffer[100];
+    read_from_socket(buffer); // Unchecked return value
+
     return 0;
+}
+
+VULNERABILITY Type: NULL_DEREFERENCE,  File: utility.c,  Description: pointer `ptr` last assigned on line 6 could be null and is dereferenced at line 8, column 5., Bug_function: void use_after_free() {
+    int* ptr = (int*)malloc(sizeof(int));
+    free(ptr);
+    *ptr = 10; // Use after free vulnerability
+}
+
+, Functions: void use_after_free() {
+    int* ptr = (int*)malloc(sizeof(int));
+    free(ptr);
+    *ptr = 10; // Use after free vulnerability
+}
+
+
+VULNERABILITY Type: NULL_DEREFERENCE,  File: error.c,  Description: pointer `ptr` last assigned on line 13 could be null and is dereferenced by call to `strcmp()` at line 14, column 9., Bug_function: void nullPointerDereference() {
+    char *ptr = NULL;
+    if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+        printf("This is never reached\n");
+    }
+}
+
+, Functions: void nullPointerDereference() {
+    char *ptr = NULL;
+    if (strcmp(ptr, "test") == 0) { // Null pointer dereference
+        printf("This is never reached\n");
+    }
+}
+
+
+VULNERABILITY Type: DEAD_STORE,  File: error.c,  Description: The value written to &v (type int) is never used., Bug_function: void resourceLeak() {
+    int x = 5;
+    int v = 7;
+    FILE *file = fopen("test.txt", "r");
+    if (file == NULL) {
+        printf("Failed to open file\n");
+        return;
+    }
+
+    // Forgetting to close the file, causing a resource leak
+}
+
+, Functions: void resourceLeak() {
+    int x = 5;
+    int v = 7;
+    FILE *file = fopen("test.txt", "r");
+    if (file == NULL) {
+        printf("Failed to open file\n");
+        return;
+    }
+
+    // Forgetting to close the file, causing a resource leak
+}
+
+
+VULNERABILITY Type: DEAD_STORE,  File: error.c,  Description: The value written to &x (type int) is never used., Bug_function: void resourceLeak() {
+    int x = 5;
+    int v = 7;
+    FILE *file = fopen("test.txt", "r");
+    if (file == NULL) {
+        printf("Failed to open file\n");
+        return;
+    }
+
+    // Forgetting to close the file, causing a resource leak
+}
+
+, Functions: void resourceLeak() {
+    int x = 5;
+    int v = 7;
+    FILE *file = fopen("test.txt", "r");
+    if (file == NULL) {
+        printf("Failed to open file\n");
+        return;
+    }
+
+    // Forgetting to close the file, causing a resource leak
+}
+
+
+VULNERABILITY Type: RESOURCE_LEAK,  File: error.c,  Description: resource of type `_IO_FILE` acquired by call to `fopen()` at line 23, column 18 is not released after line 24, column 5., Bug_function: void resourceLeak() {
+    int x = 5;
+    int v = 7;
+    FILE *file = fopen("test.txt", "r");
+    if (file == NULL) {
+        printf("Failed to open file\n");
+        return;
+    }
+
+    // Forgetting to close the file, causing a resource leak
+}
+
+, Functions: void resourceLeak() {
+    int x = 5;
+    int v = 7;
+    FILE *file = fopen("test.txt", "r");
+    if (file == NULL) {
+        printf("Failed to open file\n");
+        return;
+    }
+
+    // Forgetting to close the file, causing a resource leak
 }
 
 
