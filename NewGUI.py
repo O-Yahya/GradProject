@@ -163,6 +163,15 @@ def register(email_entry, username_entry, password_entry, root):
 
         label = customtkinter.CTkLabel(master=frame, text="Account created successfully!", font=("Verdana", 18))
         label.pack(padx=10, pady=10)
+    else:
+        failure_window = customtkinter.CTkToplevel(root)
+        failure_window.geometry("300x300")
+
+        frame = customtkinter.CTkFrame(master=failure_window)
+        frame.pack(fill="both", expand=True)
+
+        label = customtkinter.CTkLabel(master=frame, text="Email already associated with an account!", font=("Verdana", 18))
+        label.pack(padx=10, pady=10)
 
     def close():
         succes_window.destroy()

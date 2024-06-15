@@ -141,7 +141,3 @@ def get_user_by_email(conn, email):
     if row:
         return User(*row)
     return None
-
-conn = connect_to_db('SecureX.db')
-add_user(conn, "OmarYahya", "omar@gmail.com", "PASS123")
-add_user(conn, "AhmedTamer", "ahmed@gmail.com", "PASS123")
