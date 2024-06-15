@@ -28,11 +28,14 @@ def start_page():
 
     root.mainloop()
 
-def login(email_entry, password_entry, root):
+def login(email_entry, password_entry, root, label):
     user = get_user_by_email(conn, email_entry.get())
-    if user.password == password_entry.get():
+    if user and user.password == password_entry.get():
         print("Successful login.")
         home_page(root)
+    else:
+        label.configure(text="Invalid email or password. Please try again.")
+
 
 def login_window(root_start):
     root_start.destroy()
@@ -53,7 +56,10 @@ def login_window(root_start):
     entry2 = customtkinter.CTkEntry(master=frame, placeholder_text="Password", show="*")
     entry2.pack(pady=12, padx=10)
 
-    button = customtkinter.CTkButton(master=frame, text="Login", command=lambda: login(entry1, entry2, root))
+    error_label = customtkinter.CTkLabel(master=frame, text="", text_color="red")
+    error_label.pack(pady=6, padx=10)
+
+    button = customtkinter.CTkButton(master=frame, text="Login", command=lambda: login(entry1, entry2, root, error_label))
     button.pack(pady=12, padx=10)
 
     checkbox = customtkinter.CTkCheckBox(master=frame, text="Stay logged in")
