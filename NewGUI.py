@@ -1,7 +1,7 @@
 import customtkinter
 from PIL import Image
 import random
-from db import get_user_by_email, connect_to_db
+from db import get_user_by_email, connect_to_db, add_user
 
 conn = connect_to_db('SecureX.db')
 
@@ -88,7 +88,7 @@ def register_window():
     entry3 = customtkinter.CTkEntry(master=frame, placeholder_text="Password", show="*")
     entry3.pack(pady=12, padx=10)
 
-    button = customtkinter.CTkButton(master=frame, text="Register", command=lambda: success_dialog(root))
+    button = customtkinter.CTkButton(master=frame, text="Register", command=lambda: register(entry1, entry2, entry3, root))
     button.pack(pady=12, padx=10)
 
     checkbox = customtkinter.CTkCheckBox(master=frame, text="Receive updates about new features")
@@ -148,15 +148,21 @@ def home_page(login_root):
 
     root.mainloop()
 
-def success_dialog(root):
-    succes_window = customtkinter.CTkToplevel(root)
-    succes_window.geometry("300x300")
+def register(email_entry, username_entry, password_entry, root):
+    email = email_entry.get()
+    username = username_entry.get()
+    password = password_entry.get()
 
-    frame = customtkinter.CTkFrame(master=succes_window)
-    frame.pack(fill="both", expand=True)
+    new_user = add_user(conn, username, email, password)
+    if new_user:
+        succes_window = customtkinter.CTkToplevel(root)
+        succes_window.geometry("300x300")
 
-    label = customtkinter.CTkLabel(master=frame, text="Account created successfully!", font=("Verdana", 18))
-    label.pack(padx=10, pady=10)
+        frame = customtkinter.CTkFrame(master=succes_window)
+        frame.pack(fill="both", expand=True)
+
+        label = customtkinter.CTkLabel(master=frame, text="Account created successfully!", font=("Verdana", 18))
+        label.pack(padx=10, pady=10)
 
     def close():
         succes_window.destroy()
