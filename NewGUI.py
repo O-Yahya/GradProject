@@ -326,7 +326,7 @@ def analyze_project_window():
 
     # Button to open file dialog
     def select_file():
-        file_path = filedialog.askopenfilename()
+        file_path = filedialog.askdirectory()
         file_path_entry.delete(0, "end")  # Clear any existing text
         file_path_entry.insert(0, file_path)
 
