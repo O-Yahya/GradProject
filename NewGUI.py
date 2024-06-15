@@ -125,7 +125,7 @@ def home_page(login_root):
     }
 
     analyze_button = customtkinter.CTkButton(
-        master=left_frame, text="Analyze new project", width=180, height=40, **button_style)
+        master=left_frame, text="Analyze new project", width=180, height=40, **button_style, command=analyze_project_window)
     analyze_button.pack(pady=10, padx=10)
 
     reports_button = customtkinter.CTkButton(
@@ -406,14 +406,5 @@ def analyze_project_window():
 
     root.mainloop()
 
-# Example usage
-analyze_project_window()
-
-
-
-
-
-
-
-
-#start_page()
+#analyze_project_window()
+start_page()
