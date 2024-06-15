@@ -1,6 +1,7 @@
 import customtkinter
 from PIL import Image
 import random
+from tkinter import filedialog
 from db import get_user_by_email, connect_to_db, add_user
 
 conn = connect_to_db('SecureX.db')
@@ -303,5 +304,116 @@ def scores_page():
 
     root.mainloop()
 
+def analyze_project_window():
+    root = customtkinter.CTk()
+    root.geometry("800x400")  # Increased width for better layout
+    root.title("SecureX - Analyze New Project")
 
-start_page()
+    # Main container frame
+    main_frame = customtkinter.CTkFrame(master=root)
+    main_frame.pack(fill="both", expand=True)
+
+    # Left frame (file path selection and combo box)
+    left_frame = customtkinter.CTkFrame(master=main_frame, width=400, corner_radius=10)
+    left_frame.pack(side="left", fill="both", padx=20, pady=20, expand=True)
+
+    # File path label and entry (increased width)
+    file_path_label = customtkinter.CTkLabel(master=left_frame, text="File Path:", font=("Verdana", 12))
+    file_path_label.pack(anchor="w", padx=10, pady=(10, 2))
+
+    file_path_entry = customtkinter.CTkEntry(master=left_frame, placeholder_text="Select file path...", width=240)  # Increased width
+    file_path_entry.pack(anchor="w", padx=10, pady=(0, 20))
+
+    # Button to open file dialog
+    def select_file():
+        file_path = filedialog.askopenfilename()
+        file_path_entry.delete(0, "end")  # Clear any existing text
+        file_path_entry.insert(0, file_path)
+
+    file_button = customtkinter.CTkButton(master=left_frame, text="Browse", command=select_file)
+    file_button.pack(anchor="w", padx=10, pady=(0, 20))
+
+    # Combo box for selecting project type
+    project_type_label = customtkinter.CTkLabel(master=left_frame, text="Select Project Type:", font=("Verdana", 12))
+    project_type_label.pack(anchor="w", padx=10, pady=(20, 2))
+
+    project_type_var = customtkinter.StringVar()
+    project_type_var.set("Project")  # Default selection
+
+    project_type_combo = customtkinter.CTkComboBox(master=left_frame, values=["Project", "Single File"], variable=project_type_var, width=120)  # Adjusted width
+    project_type_combo.pack(anchor="w", padx=10, pady=(0, 20))
+
+    # Function to handle visibility of radio buttons based on combo box selection
+    def show_radio_buttons():
+        selection = project_type_var.get()
+        print(selection)
+        if selection == "Project":
+            build_tool_label.pack(anchor="w", padx=10, pady=(10, 2))
+            for radio in build_tool_radios:
+                radio.pack(anchor="w", padx=20)
+            language_label.pack_forget()
+            for radio in language_radios:
+                radio.pack_forget()
+        elif selection == "Single File":
+            language_label.pack(anchor="w", padx=10, pady=(10, 2))
+            for radio in language_radios:
+                radio.pack(anchor="w", padx=20)
+            build_tool_label.pack_forget()
+            for radio in build_tool_radios:
+                radio.pack_forget()
+
+    # Right frame (radio buttons for Build Tool and Language)
+    right_frame = customtkinter.CTkFrame(master=main_frame, width=300, corner_radius=10)
+    right_frame.pack(side="right", fill="both", padx=20, pady=20, expand=True)
+
+    # Project build tool label and radio buttons
+    build_tool_label = customtkinter.CTkLabel(master=right_frame, text="Project Build Tool:", font=("Verdana", 12))
+
+    build_tool_var = customtkinter.StringVar()
+    build_tool_var.set("Make")  # Default selection
+
+    build_tool_options = ["Make", "CMake", "Maven", "Gradle"]
+
+    build_tool_radios = []
+    for tool in build_tool_options:
+        radio = customtkinter.CTkRadioButton(master=right_frame, text=tool, variable=build_tool_var, value=tool)
+        build_tool_radios.append(radio)
+
+    # Single file language label and radio buttons
+    language_label = customtkinter.CTkLabel(master=right_frame, text="Single File Language:", font=("Verdana", 12))
+
+    language_var = customtkinter.StringVar()
+    language_var.set("C/C++")  # Default selection
+
+    language_options = ["C/C++", "Java", "Python"]
+
+    language_radios = []
+    for language in language_options:
+        radio = customtkinter.CTkRadioButton(master=right_frame, text=language, variable=language_var, value=language)
+        language_radios.append(radio)
+
+    # Initially show build tool options
+    build_tool_label.pack(anchor="w", padx=10, pady=(10, 2))
+    for radio in build_tool_radios:
+        radio.pack(anchor="w", padx=20)
+
+    # Binding combo box selection event to show_radio_buttons function
+    project_type_combo.bind("<<ComboboxSelected>>", show_radio_buttons)
+
+    # Analyze button
+    analyze_button = customtkinter.CTkButton(master=main_frame, text="Analyze", width=100, height=40, corner_radius=10)
+    analyze_button.pack(pady=(20, 0))
+
+    root.mainloop()
+
+# Example usage
+analyze_project_window()
+
+
+
+
+
+
+
+
+#start_page()
