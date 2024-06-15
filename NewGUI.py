@@ -1,6 +1,9 @@
 import customtkinter
 from PIL import Image
 import random
+from db import get_user_by_email, connect_to_db
+
+conn = connect_to_db('SecureX.db')
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("blue")
@@ -25,6 +28,12 @@ def start_page():
 
     root.mainloop()
 
+def login(email_entry, password_entry, root):
+    user = get_user_by_email(conn, email_entry.get())
+    if user.password == password_entry.get():
+        print("Successful login.")
+        home_page(root)
+
 def login_window(root_start):
     root_start.destroy()
 
@@ -38,13 +47,13 @@ def login_window(root_start):
     label = customtkinter.CTkLabel(master=frame, text="SecureX Login", font=("Verdana", 24, "bold"))
     label.pack(pady=12, padx=10)
 
-    entry1 = customtkinter.CTkEntry(master=frame, placeholder_text="Username")
+    entry1 = customtkinter.CTkEntry(master=frame, placeholder_text="Email")
     entry1.pack(pady=12, padx=10)
 
     entry2 = customtkinter.CTkEntry(master=frame, placeholder_text="Password", show="*")
     entry2.pack(pady=12, padx=10)
 
-    button = customtkinter.CTkButton(master=frame, text="Login", command=lambda: home_page(root))
+    button = customtkinter.CTkButton(master=frame, text="Login", command=lambda: login(entry1, entry2, root))
     button.pack(pady=12, padx=10)
 
     checkbox = customtkinter.CTkCheckBox(master=frame, text="Stay logged in")

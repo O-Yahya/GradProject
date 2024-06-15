@@ -1,45 +1,53 @@
 import sqlite3
 from Infer import Vulnerability
 
-# creates or connects to db file
-conn = sqlite3.connect('SecureX.db')
+def connect_to_db(name):
+    print("connecting to DB")
+    # creates or connects to db file
+    conn = sqlite3.connect('SecureX.db')
+    c = conn.cursor()
 
-c = conn.cursor()
-
-# sqlite query to create user table
-c.execute("""CREATE TABLE IF NOT EXISTS users(
+    # sqlite query to create user table
+    c.execute("""CREATE TABLE IF NOT EXISTS users(
                 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL,
                 email TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL
-          );""")
+              );""")
 
-c.execute("""CREATE TABLE IF NOT EXISTS projects(
-                project_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                project_name TEXT NOT NULL,
-                project_path TEXT NOT NULL,
-                build_tool TEXT NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES users(user_id));""")
+    c.execute("""CREATE TABLE IF NOT EXISTS projects(
+                    project_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER,
+                    project_name TEXT NOT NULL,
+                    project_path TEXT NOT NULL,
+                    build_tool TEXT NOT NULL,
+                    FOREIGN KEY (user_id) REFERENCES users(user_id));""")
 
-c.execute("""CREATE TABLE IF NOT EXISTS vulnerabilities(
-                vulnerability_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                project_id INTEGER,
-                bug_type TEXT NOT NULL,
-                file TEXT NOT NULL,
-                description TEXT NOT NULL,
-                bug_function TEXT NOT NULL,
-                functions TEXT NOT NULL,
-                FOREIGN KEY (project_id) REFERENCES projects(project_id));""" )
+    c.execute("""CREATE TABLE IF NOT EXISTS vulnerabilities(
+                    vulnerability_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    project_id INTEGER,
+                    bug_type TEXT NOT NULL,
+                    file TEXT NOT NULL,
+                    description TEXT NOT NULL,
+                    bug_function TEXT NOT NULL,
+                    functions TEXT NOT NULL,
+                    FOREIGN KEY (project_id) REFERENCES projects(project_id));""" )
 
-c.execute("""CREATE TABLE IF NOT EXISTS reports(
-                report_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                project_id INTEGER,
-                score INTEGER,
-                num_vulnerabilities INTEGER,
-                detection_method TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (project_id) REFERENCES projects(project_id));""")
+    c.execute("""CREATE TABLE IF NOT EXISTS reports(
+                    report_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    project_id INTEGER,
+                    score INTEGER,
+                    num_vulnerabilities INTEGER,
+                    detection_method TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (project_id) REFERENCES projects(project_id));""")
+
+    print("DB created")
+    return conn
+
+
+
+
 
 class User:
     def __init__(self, user_id, username, email, password):
@@ -70,10 +78,17 @@ class Report:
         self.created_at = created_at
 
 def add_user(conn, username, email, password):
+    print(f"Attempting to add user: {email}")
+    # Check if the email already exists in the database
+    if get_user_by_email(conn, email) is not None:
+        print(f"User with email {email} already exists.")
+        return None
+
     sql = '''INSERT INTO users(username, email, password) VALUES(?, ?, ?)'''
     cur = conn.cursor()
     cur.execute(sql, (username, email, password))
     conn.commit()
+    print(f"User {email} added successfully.")
     return cur.lastrowid
 
 def add_project(conn, user_id, project_name, project_path, build_tool):
@@ -127,4 +142,6 @@ def get_user_by_email(conn, email):
         return User(*row)
     return None
 
-conn.close()
+conn = connect_to_db('SecureX.db')
+add_user(conn, "OmarYahya", "omar@gmail.com", "PASS123")
+add_user(conn, "AhmedTamer", "ahmed@gmail.com", "PASS123")
