@@ -333,6 +333,29 @@ def analyze_project_window():
     file_button = customtkinter.CTkButton(master=left_frame, text="Browse", command=select_file)
     file_button.pack(anchor="w", padx=10, pady=(0, 20))
 
+    # function to show dynamic analysis options if user ticks web app checkbox
+    def on_checkbox_toggle():
+        if checkbox_var.get() == 1:
+            web_app_url_label.pack(pady=10)
+            web_app_url_entry.pack(pady=10)
+            web_app_note_label.pack(pady=10)
+        else:
+            web_app_url_label.pack_forget()
+            web_app_url_entry.pack_forget()
+            web_app_note_label.pack_forget()
+
+    # variable to store checkbox choice
+    checkbox_var = customtkinter.IntVar()
+
+    # creating checkbox, label and entry field for web app analysis
+    web_app_checkbox = customtkinter.CTkCheckBox(master=left_frame, checkmark_color="green", text="Web Application", variable=checkbox_var, command=on_checkbox_toggle)
+    web_app_checkbox.pack(anchor="w", padx=10, pady=10)
+
+    web_app_url_label = customtkinter.CTkLabel(master=left_frame, text="URL: ")
+    web_app_url_entry = customtkinter.CTkEntry(master=left_frame, placeholder_text="Enter web app URL...", width=280)
+
+    web_app_note_label = customtkinter.CTkLabel(master=left_frame, text="To activate Dynamic Analysis your web application should be running at the entered URL.\n")
+
     # Right frame (radio buttons for Build Tool and Language)
     right_frame = customtkinter.CTkFrame(master=main_frame, width=300, corner_radius=10)
     right_frame.pack(side="right", fill="both", padx=20, pady=20, expand=True)
