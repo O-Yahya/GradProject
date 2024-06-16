@@ -3,6 +3,7 @@ from PIL import Image
 import random
 from tkinter import filedialog
 from db import get_user_by_email, connect_to_db, add_user
+from Infer import run_infer_scan, read_infer_json
 
 conn = connect_to_db('SecureX.db')
 
@@ -304,6 +305,13 @@ def scores_page():
 
     root.mainloop()
 
+def analyze_static(path_entry, build_tool):
+    path = path_entry.get()
+    run_infer_scan(path, build_tool)
+
+    vulnerabilities = read_infer_json(path)
+    print(vulnerabilities[0].show())
+
 def analyze_project_window():
     root = customtkinter.CTk()
     root.geometry("800x400")  # Increased width for better layout
@@ -379,10 +387,18 @@ def analyze_project_window():
         radio.pack(anchor="w", padx=20, pady=10)
 
     # Analyze button
-    analyze_button = customtkinter.CTkButton(master=main_frame, text="Analyze", width=100, height=40, corner_radius=10)
+    analyze_button = customtkinter.CTkButton(master=main_frame, text="Analyze", width=100, height=40, corner_radius=10, command=lambda: analyze_static(file_path_entry, build_tool_var))
     analyze_button.pack(pady=(20, 0))
 
     root.mainloop()
+
+def analyze_static(path_entry, build_tool):
+    build_tool = "Make"
+    path = path_entry.get()
+    run_infer_scan(path, build_tool)
+
+    vulnerabilities = read_infer_json(path)
+    print(vulnerabilities[0].show())
 
 analyze_project_window()
 #start_page()
