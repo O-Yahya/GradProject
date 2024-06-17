@@ -38,7 +38,6 @@ def login(email_entry, password_entry, root, label):
         print("Successful login.")
         global current_user
         current_user = user
-        print(current_user.user_id)
         home_page(root)
     else:
         label.configure(text="Invalid email or password. Please try again.")
@@ -407,7 +406,7 @@ def analyze_project_window():
 # function to run static analysis, add project and report information to database
 def analyze_static(path_entry, build_tool, name_entry):
     global current_user
-    print(current_user.user_id)
+
     build_tool = build_tool.get()
     path = path_entry.get()
     project_name = name_entry.get()
@@ -416,18 +415,13 @@ def analyze_static(path_entry, build_tool, name_entry):
 
     created_project_id = add_project(conn, current_user.user_id, project_name, path, build_tool)
     project = get_project_by_id(conn, created_project_id)
-    
+
     vulnerabilities = read_infer_json(path)
     score = scoring.calculate_security_score(vulnerabilities, scoring.bug_severity_dict)
     created_report_id = add_report(conn, project.project_id, score, len(vulnerabilities), "SAST")
 
     
     report = get_report_by_id(conn, created_report_id)
-
-    print(project.user_id)
-    print(project.project_name)
-    print(report.score)
-    print(report.num_vulnerabilities)
 
 
 #analyze_project_window()
