@@ -2,15 +2,16 @@ import customtkinter
 from PIL import Image
 import random
 from tkinter import filedialog
-from db import get_user_by_email, connect_to_db, add_user, add_project
+from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id
 from Infer import run_infer_scan, read_infer_json
+import scoring
 
 conn = connect_to_db('SecureX.db')
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("blue")
 
-current_user = 0
+current_user = None
 
 def start_page():
     root = customtkinter.CTk()
@@ -35,7 +36,9 @@ def login(email_entry, password_entry, root, label):
     user = get_user_by_email(conn, email_entry.get())
     if user and user.password == password_entry.get():
         print("Successful login.")
+        global current_user
         current_user = user
+        print(current_user.user_id)
         home_page(root)
     else:
         label.configure(text="Invalid email or password. Please try again.")
@@ -401,17 +404,31 @@ def analyze_project_window():
 
     root.mainloop()
 
-# function to run static analysis, add project information to database
+# function to run static analysis, add project and report information to database
 def analyze_static(path_entry, build_tool, name_entry):
+    global current_user
+    print(current_user.user_id)
     build_tool = build_tool.get()
     path = path_entry.get()
     project_name = name_entry.get()
 
     run_infer_scan(path, build_tool)
-    add_project(conn, current_user.user_id, project_name, path, build_tool)
 
+    created_project_id = add_project(conn, current_user.user_id, project_name, path, build_tool)
+    project = get_project_by_id(conn, created_project_id)
+    
     vulnerabilities = read_infer_json(path)
-    print(vulnerabilities[0].show())
+    score = scoring.calculate_security_score(vulnerabilities, scoring.bug_severity_dict)
+    created_report_id = add_report(conn, project.project_id, score, len(vulnerabilities), "SAST")
 
-analyze_project_window()
-#start_page()
+    
+    report = get_report_by_id(conn, created_report_id)
+
+    print(project.user_id)
+    print(project.project_name)
+    print(report.score)
+    print(report.num_vulnerabilities)
+
+
+#analyze_project_window()
+start_page()

@@ -92,7 +92,7 @@ def add_user(conn, username, email, password):
     return cur.lastrowid
 
 def add_project(conn, user_id, project_name, project_path, build_tool):
-    sql = '''INSERT INTO projects(user_id, project_name, project_path, build_tool) VALUES(?, ?, ?)'''
+    sql = '''INSERT INTO projects(user_id, project_name, project_path, build_tool) VALUES(?, ?, ?, ?)'''
     cur = conn.cursor()
     cur.execute(sql, (user_id, project_name, project_path, build_tool))
     conn.commit()
@@ -140,4 +140,22 @@ def get_user_by_email(conn, email):
     row = cur.fetchone()
     if row:
         return User(*row)
+    return None
+
+def get_project_by_id(conn, id):
+    sql = """SELECT * FROM projects WHERE project_id=?"""
+    cur = conn.cursor()
+    cur.execute(sql, (id,))
+    row = cur.fetchone()
+    if row:
+        return Project(*row)
+    return None
+
+def get_report_by_id(conn, id):
+    sql = """SELECT * FROM reports WHERE report_id=?"""
+    cur = conn.cursor()
+    cur.execute(sql, (id,))
+    row = cur.fetchone()
+    if row:
+        return Report(*row)
     return None
