@@ -2,7 +2,7 @@ import customtkinter
 from PIL import Image
 import random
 from tkinter import filedialog
-from db import get_user_by_email, connect_to_db, add_user
+from db import get_user_by_email, connect_to_db, add_user, add_project
 from Infer import run_infer_scan, read_infer_json
 
 conn = connect_to_db('SecureX.db')
@@ -10,6 +10,7 @@ conn = connect_to_db('SecureX.db')
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("blue")
 
+current_user = 0
 
 def start_page():
     root = customtkinter.CTk()
@@ -34,6 +35,7 @@ def login(email_entry, password_entry, root, label):
     user = get_user_by_email(conn, email_entry.get())
     if user and user.password == password_entry.get():
         print("Successful login.")
+        current_user = user
         home_page(root)
     else:
         label.configure(text="Invalid email or password. Please try again.")
@@ -325,6 +327,13 @@ def analyze_project_window():
     left_frame = customtkinter.CTkFrame(master=main_frame, width=400, corner_radius=10)
     left_frame.pack(side="left", fill="both", padx=20, pady=20, expand=True)
 
+    # project name label and entry
+    project_name_label = customtkinter.CTkLabel(master=left_frame, text="Project Name:", font=("Verdana", 12))
+    project_name_label.pack(anchor="w", padx=10, pady=(10, 2))
+
+    project_name_entry = customtkinter.CTkEntry(master=left_frame, placeholder_text="Enter project name...", width=200)
+    project_name_entry.pack(anchor="w", padx=10, pady=(0, 20))
+
     # File path label and entry (increased width)
     file_path_label = customtkinter.CTkLabel(master=left_frame, text="File Path:", font=("Verdana", 12))
     file_path_label.pack(anchor="w", padx=10, pady=(10, 2))
@@ -387,15 +396,19 @@ def analyze_project_window():
         radio.pack(anchor="w", padx=20, pady=10)
 
     # Analyze button
-    analyze_button = customtkinter.CTkButton(master=main_frame, text="Analyze", width=100, height=40, corner_radius=10, command=lambda: analyze_static(file_path_entry, build_tool_var))
+    analyze_button = customtkinter.CTkButton(master=main_frame, text="Analyze", width=100, height=40, corner_radius=10, command=lambda: analyze_static(file_path_entry, build_tool_var, project_name_entry))
     analyze_button.pack(pady=(20, 0))
 
     root.mainloop()
 
-def analyze_static(path_entry, build_tool):
+# function to run static analysis, add project information to database
+def analyze_static(path_entry, build_tool, name_entry):
     build_tool = build_tool.get()
     path = path_entry.get()
+    project_name = name_entry.get()
+
     run_infer_scan(path, build_tool)
+    add_project(conn, current_user.user_id, project_name, path, build_tool)
 
     vulnerabilities = read_infer_json(path)
     print(vulnerabilities[0].show())
