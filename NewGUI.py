@@ -329,7 +329,7 @@ def analyze_project_window():
     file_path_label = customtkinter.CTkLabel(master=left_frame, text="File Path:", font=("Verdana", 12))
     file_path_label.pack(anchor="w", padx=10, pady=(10, 2))
 
-    file_path_entry = customtkinter.CTkEntry(master=left_frame, placeholder_text="Select project directory path...", width=280)  # Increased width
+    file_path_entry = customtkinter.CTkEntry(master=left_frame, placeholder_text="Select project directory path...", width=380)  # Increased width
     file_path_entry.pack(anchor="w", padx=10, pady=(0, 20))
 
     # Button to open file dialog
@@ -393,7 +393,7 @@ def analyze_project_window():
     root.mainloop()
 
 def analyze_static(path_entry, build_tool):
-    build_tool = "Make"
+    build_tool = build_tool.get()
     path = path_entry.get()
     run_infer_scan(path, build_tool)
 
