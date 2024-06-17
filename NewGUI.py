@@ -2,7 +2,7 @@ import customtkinter
 from PIL import Image
 import random
 from tkinter import filedialog
-from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id
+from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project
 from Infer import run_infer_scan, read_infer_json
 import scoring
 
@@ -202,14 +202,22 @@ scores_data = [
         "score": random.randint(50, 100),
         "vulnerabilities": random.randint(0, 10),
         "detection_method": "DAST"
-    },
-    {
-        "project_name": "Project Gamma",
-        "score": random.randint(50, 100),
-        "vulnerabilities": random.randint(0, 10),
-        "detection_method": "Both"
     }
 ]
+
+def get_user_scores_data():
+    global current_user
+    projects = get_projects_by_user(conn, current_user.user_id)
+    for project in projects:
+        reports = get_reports_by_project(conn, project.project_id)
+        for report in reports:
+            score_data = {
+            "project_name": project.project_name,
+            "score": report.score,
+            "vulnerabilities": report.num_vulnerabilities,
+            "detection_method": report.detection_method
+        }
+            scores_data.append(score_data)
 
 def scores_page():
     root = customtkinter.CTk()
@@ -265,6 +273,7 @@ def scores_page():
     def on_leave(event, frame):
         frame.configure(fg_color="transparent")
 
+    get_user_scores_data()
     for score in scores_data:
         score_frame = customtkinter.CTkFrame(master=right_frame, fg_color="transparent", border_width=2, border_color="grey", corner_radius=10)
         score_frame.pack(fill="x", padx=20, pady=20, ipady=20)
@@ -422,6 +431,7 @@ def analyze_static(path_entry, build_tool, name_entry):
 
     
     report = get_report_by_id(conn, created_report_id)
+    print("Analysis completed")
 
 
 #analyze_project_window()
