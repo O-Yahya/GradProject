@@ -18,12 +18,12 @@ class DASTVulnerability:
 
 
 # Info needed for using ZAP API
-zap_url = "http://localhost:8081"
-zap_key = "ioc86mishqumq6mf0j8qhsnalb"
+zap_url = "http://localhost:8080"
+zap_key = "mocuc71a5v4p5ic4lsmk0l5nfg"
 
 # creating ZAP API instance
-#zap = ZAPv2(proxies={'http': 'http://127.0.0.1:8081', 'https': 'http://127.0.0.1:8081'}, apikey=zap_key)
-#zap.core.new_session("Test Session")
+zap = ZAPv2(proxies={'http': 'http://127.0.0.1:8080', 'https': 'http://127.0.0.1:8080'}, apikey=zap_key)
+zap.core.new_session("Test Session")
 
 # function to take url of target app and analyze it using OWASP ZAP
 def zap_scan():
