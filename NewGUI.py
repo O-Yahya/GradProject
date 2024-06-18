@@ -2,7 +2,7 @@ import customtkinter
 from PIL import Image
 import random
 from tkinter import filedialog
-from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project
+from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project, add_vulnerability
 from Infer import run_infer_scan, read_infer_json
 import scoring
 
@@ -32,7 +32,21 @@ def start_page():
 
     root.mainloop()
 
+def is_valid_email(email):
+    return email.endswith(".com")
+
 def login(email_entry, password_entry, root, label):
+
+    # Check if any field is empty
+    if email_entry.get() == "" or password_entry.get() == "":
+        label.configure(text="Please fill in all fields.")
+        return
+
+    # Validate email format
+    if not is_valid_email(email_entry.get()):
+        label.configure(text="Invalid email. Please use an email ending with .com")
+        return
+
     user = get_user_by_email(conn, email_entry.get())
     if user and user.password == password_entry.get():
         print("Successful login.")
@@ -103,6 +117,7 @@ def register_window():
     root.mainloop()
 
 def home_page(login_root):
+    global current_user
     login_root.destroy()
 
     root = customtkinter.CTk()
@@ -117,7 +132,8 @@ def home_page(login_root):
     left_frame = customtkinter.CTkFrame(master=main_frame, width=200, height=600, corner_radius=10, border_width=0, fg_color="#1c1c1c")
     left_frame.pack(side="left", fill="y", padx=(0, 2))
 
-    welcome_label = customtkinter.CTkLabel(master=left_frame, text="Welcome!", font=("Verdana", 18, "bold"))
+    welcome_text = "Welcome " + current_user.username + "!"
+    welcome_label = customtkinter.CTkLabel(master=left_frame, text=welcome_text, font=("Verdana", 18, "bold"))
     welcome_label.pack(anchor="nw", pady=10, padx=10)
 
     # Define transparent button style
@@ -426,10 +442,13 @@ def analyze_static(path_entry, build_tool, name_entry):
     project = get_project_by_id(conn, created_project_id)
 
     vulnerabilities = read_infer_json(path)
+    for vulnerability in vulnerabilities:
+        add_vulnerability(conn, created_project_id, vulnerability.type, vulnerability.file, vulnerability.description, vulnerability.bug_function, vulnerability.functions)
+
     score = scoring.calculate_security_score(vulnerabilities, scoring.bug_severity_dict)
     created_report_id = add_report(conn, project.project_id, score, len(vulnerabilities), "SAST")
 
-    
+
     report = get_report_by_id(conn, created_report_id)
     print("Analysis completed")
 
