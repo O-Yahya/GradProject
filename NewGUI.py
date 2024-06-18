@@ -205,23 +205,7 @@ def register(email_entry, username_entry, password_entry, root):
     button.pack(padx=10, pady=10)
 
 
-
-scores_data = [
-    {
-        "project_name": "Project Alpha",
-        "score": random.randint(50, 100),
-        "vulnerabilities": random.randint(0, 10),
-        "detection_method": "SAST"
-    },
-    {
-        "project_name": "Project Beta",
-        "score": random.randint(50, 100),
-        "vulnerabilities": random.randint(0, 10),
-        "detection_method": "DAST"
-    }
-]
-
-def get_user_scores_data():
+def get_user_scores_data(scores_data):
     global current_user
     projects = get_projects_by_user(conn, current_user.user_id)
     for project in projects:
@@ -289,7 +273,21 @@ def scores_page():
     def on_leave(event, frame):
         frame.configure(fg_color="transparent")
 
-    get_user_scores_data()
+    scores_data = [
+    {
+        "project_name": "Project Alpha",
+        "score": random.randint(50, 100),
+        "vulnerabilities": random.randint(0, 10),
+        "detection_method": "SAST"
+    },
+    {
+        "project_name": "Project Beta",
+        "score": random.randint(50, 100),
+        "vulnerabilities": random.randint(0, 10),
+        "detection_method": "DAST"
+    }
+]
+    get_user_scores_data(scores_data)
     for score in scores_data:
         score_frame = customtkinter.CTkFrame(master=right_frame, fg_color="transparent", border_width=2, border_color="grey", corner_radius=10)
         score_frame.pack(fill="x", padx=20, pady=20, ipady=20)
@@ -520,9 +518,9 @@ vulnerabilities = [
 ]
 
 # Call the function to display the report
-display_vulnerabilities_report(vulnerabilities)
+#display_vulnerabilities_report(vulnerabilities)
 
 
 
 #analyze_project_window()
-#start_page()
+start_page()
