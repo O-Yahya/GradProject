@@ -1,7 +1,7 @@
 import customtkinter
 from PIL import Image
 import random
-from tkinter import filedialog
+from tkinter import filedialog, Scrollbar, Canvas
 from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project, add_vulnerability
 from Infer import run_infer_scan, read_infer_json
 import scoring
@@ -453,5 +453,76 @@ def analyze_static(path_entry, build_tool, name_entry):
     print("Analysis completed")
 
 
+def display_vulnerabilities_report(vulnerabilities):
+    root = customtkinter.CTk()
+    root.geometry("800x600")
+    root.title("SecureX - Vulnerabilities Report")
+
+    main_frame = customtkinter.CTkFrame(master=root)
+    main_frame.pack(fill="both", expand=True)
+
+    canvas = Canvas(main_frame, borderwidth=0, background="#2b2b2b")
+    canvas.pack(side="left", fill="both", expand=True)
+
+    scrollbar = Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    scrollable_frame = customtkinter.CTkFrame(master=canvas, fg_color="#2b2b2b")
+    scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
+    center_frame = customtkinter.CTkFrame(master=scrollable_frame, fg_color="#2b2b2b")
+    center_frame.pack(pady=20, padx=20)
+
+    title_label = customtkinter.CTkLabel(master=center_frame, text="Project Vulnerabilities Report", font=("Verdana", 24, "bold"), fg_color="#1f1f1f")
+    title_label.pack(pady=12, padx=10)
+
+    for vulnerability in vulnerabilities:
+        vuln_frame = customtkinter.CTkFrame(master=center_frame, corner_radius=10, border_width=1, fg_color="#404040")
+        vuln_frame.pack(pady=10, padx=10, fill="x")
+
+        vuln_type_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Type: {vulnerability['type']}", font=("Helvetica", 18, "bold"), fg_color="#333333")
+        vuln_type_label.pack(anchor="w", pady=5, padx=10)
+
+        file_label = customtkinter.CTkLabel(master=vuln_frame, text=f"File: {vulnerability['file']}", font=("Helvetica", 16), fg_color="#333333")
+        file_label.pack(anchor="w", pady=5, padx=10)
+
+        description_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Description: {vulnerability['description']}", font=("Helvetica", 14), wraplength=700, fg_color="#333333")
+        description_label.pack(anchor="w", pady=5, padx=10)
+
+        impact_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Impact on Security: {vulnerability['impact']}", font=("Helvetica", 14), fg_color="#333333")
+        impact_label.pack(anchor="w", pady=5, padx=10)
+
+    root.mainloop()
+
+# Example vulnerabilities data
+vulnerabilities = [
+    {
+        "type": "SQL Injection",
+        "file": "database.py",
+        "description": "User input used directly in SQL query without sanitization.",
+        "impact": "High"
+    },
+    {
+        "type": "Cross-Site Scripting (XSS)",
+        "file": "views.py",
+        "description": "Unsanitized user input used in web page output.",
+        "impact": "Medium"
+    },
+    {
+        "type": "Buffer Overflow",
+        "file": "main.c",
+        "description": "User input used in strcpy without length check.",
+        "impact": "Critical"
+    }
+]
+
+# Call the function to display the report
+display_vulnerabilities_report(vulnerabilities)
+
+
+
 #analyze_project_window()
-start_page()
+#start_page()
