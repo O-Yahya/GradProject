@@ -2,7 +2,7 @@ import customtkinter
 from PIL import Image
 import random
 from tkinter import filedialog, Scrollbar, Canvas
-from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project, add_vulnerability
+from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project, add_vulnerability, get_vulnerabilities_by_project
 from Infer import run_infer_scan, read_infer_json
 import scoring
 
@@ -212,6 +212,7 @@ def get_user_scores_data(scores_data):
         reports = get_reports_by_project(conn, project.project_id)
         for report in reports:
             score_data = {
+            "project_id": project.project_id,
             "project_name": project.project_name,
             "score": report.score,
             "vulnerabilities": report.num_vulnerabilities,
@@ -275,12 +276,14 @@ def scores_page():
 
     scores_data = [
     {
+        "project_id": 98,
         "project_name": "Project Alpha",
         "score": random.randint(50, 100),
         "vulnerabilities": random.randint(0, 10),
         "detection_method": "SAST"
     },
     {
+        "project_id": 99,
         "project_name": "Project Beta",
         "score": random.randint(50, 100),
         "vulnerabilities": random.randint(0, 10),
@@ -327,7 +330,7 @@ def scores_page():
         detection_label = customtkinter.CTkLabel(master=detection_frame, text="Detection", font=("Helvetica", 18, "bold"))
         detection_label.pack()
 
-        view_report_button = customtkinter.CTkButton(master=score_frame, text="View Report", width=100, height=40, fg_color="grey")
+        view_report_button = customtkinter.CTkButton(master=score_frame, text="View Report", width=100, height=40, fg_color="grey", command=lambda: display_vulnerabilities_report(score["project_id"]))
         view_report_button.pack(side="right", padx=20)
 
     root.mainloop()
@@ -451,7 +454,7 @@ def analyze_static(path_entry, build_tool, name_entry):
     print("Analysis completed")
 
 
-def display_vulnerabilities_report(vulnerabilities):
+def display_vulnerabilities_report(project_id):
     root = customtkinter.CTk()
     root.geometry("800x600")
     root.title("SecureX - Vulnerabilities Report")
@@ -476,6 +479,8 @@ def display_vulnerabilities_report(vulnerabilities):
 
     title_label = customtkinter.CTkLabel(master=center_frame, text="Project Vulnerabilities Report", font=("Verdana", 24, "bold"), fg_color="#1f1f1f")
     title_label.pack(pady=12, padx=10)
+
+    vulnerabilities = get_vulnerabilities_by_project(conn, project_id)
 
     for vulnerability in vulnerabilities:
         vuln_frame = customtkinter.CTkFrame(master=center_frame, corner_radius=10, border_width=1, fg_color="#404040")
