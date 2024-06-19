@@ -150,7 +150,7 @@ def home_page(login_root):
     analyze_button.pack(pady=10, padx=10)
 
     reports_button = customtkinter.CTkButton(
-        master=left_frame, text="My reports", width=180, height=40, **button_style)
+        master=left_frame, text="My reports", width=180, height=40, **button_style, command=my_reports_window)
     reports_button.pack(pady=10, padx=10)
 
     scores_button = customtkinter.CTkButton(
@@ -332,9 +332,10 @@ def scores_page():
         detection_label = customtkinter.CTkLabel(master=detection_frame, text="Detection", font=("Helvetica", 18, "bold"))
         detection_label.pack()
 
-        print(current_id)
+
         view_report_button = customtkinter.CTkButton(master=score_frame, text="View Report", width=100, height=40, fg_color="grey", command=lambda: display_vulnerabilities_report(current_id))
         view_report_button.pack(side="right", padx=20)
+        print(current_id)
 
     root.mainloop()
 
@@ -457,7 +458,8 @@ def analyze_static(path_entry, build_tool, name_entry):
     print("Analysis completed")
 
 
-def display_vulnerabilities_report(project_id):
+def display_vulnerabilities_report(project_id_entry):
+    project_id = project_id_entry.get()
     root = customtkinter.CTk()
     root.geometry("800x600")
     root.title("SecureX - Vulnerabilities Report")
@@ -503,32 +505,65 @@ def display_vulnerabilities_report(project_id):
 
     root.mainloop()
 
-# Example vulnerabilities data
-vulnerabilities = [
-    {
-        "type": "SQL Injection",
-        "file": "database.py",
-        "description": "User input used directly in SQL query without sanitization.",
-        "impact": "High"
-    },
-    {
-        "type": "Cross-Site Scripting (XSS)",
-        "file": "views.py",
-        "description": "Unsanitized user input used in web page output.",
-        "impact": "Medium"
-    },
-    {
-        "type": "Buffer Overflow",
-        "file": "main.c",
-        "description": "User input used in strcpy without length check.",
-        "impact": "Critical"
-    }
-]
+def my_reports_window():
+    global current_user
+    root = customtkinter.CTk()
+    root.geometry("700x500")
+    root.title("SecureX - View Analysis Report")
 
-# Call the function to display the report
-#display_vulnerabilities_report(vulnerabilities)
+    frame = customtkinter.CTkFrame(master=root, corner_radius=15)
+    frame.pack(pady=20, padx=60, fill="both", expand=True)
 
+    label = customtkinter.CTkLabel(master=frame, text="Projects", font=("Verdana", 26, "bold"))
+    label.pack(pady=12, padx=10)
 
+    # Fetch projects from the database
+    projects = get_projects_by_user(conn, current_user.user_id)
 
-#analyze_project_window()
+    # Scrollable list of projects
+    canvas = Canvas(frame, borderwidth=0, background="#f0f0f0")
+    scrollbar = Scrollbar(frame, orient="vertical", command=canvas.yview)
+    scrollable_frame = customtkinter.CTkFrame(master=canvas, fg_color="#ffffff")
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+        )
+    )
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    for project in projects:
+        project_frame = customtkinter.CTkFrame(master=scrollable_frame, fg_color="#ffffff", corner_radius=15, border_width=2, border_color="#e0e0e0")
+        project_frame.pack(pady=5, padx=10, fill="x", expand=True)
+
+        project_label = customtkinter.CTkLabel(
+            master=project_frame,
+            text=f"ID: {project.project_id}    Name: {project.project_name}",
+            font=("Arial", 18),
+            anchor="w",
+            text_color="#333333"  # Darker color for better readability
+        )
+        project_label.pack(anchor="w", padx=10, pady=5)
+
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+
+    entry_frame = customtkinter.CTkFrame(master=frame)
+    entry_frame.pack(pady=20)
+
+    entry_label = customtkinter.CTkLabel(master=entry_frame, text="Enter Project ID:", font=("Arial", 16))
+    entry_label.pack(side="left", padx=10)
+
+    entry = customtkinter.CTkEntry(master=entry_frame, placeholder_text="Project ID", width=200, font=("Arial", 16))
+    entry.pack(side="left", padx=10)
+
+    button = customtkinter.CTkButton(master=frame, text="View Analysis Report", font=("Arial", 16), command=lambda: display_vulnerabilities_report(entry))
+    button.pack(pady=12, padx=10)
+
+    root.mainloop()
+
 start_page()
+#my_reports_window()

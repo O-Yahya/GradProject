@@ -1,8 +1,8 @@
 import customtkinter
 from PIL import Image
 import random
-from tkinter import filedialog
-from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project
+from tkinter import filedialog, Scrollbar, Canvas
+from db import get_user_by_email, connect_to_db, add_user, add_project, add_report, get_project_by_id, get_report_by_id, get_projects_by_user, get_reports_by_project, add_vulnerability, get_vulnerabilities_by_project
 from Infer import run_infer_scan, read_infer_json
 import scoring
 
@@ -36,22 +36,19 @@ def is_valid_email(email):
     return email.endswith(".com")
 
 def login(email_entry, password_entry, root, label):
-    email = email_entry.get()
-    password = password_entry.get()
 
     # Check if any field is empty
-    if email == "" or password == "":
+    if email_entry.get() == "" or password_entry.get() == "":
         label.configure(text="Please fill in all fields.")
         return
 
     # Validate email format
-    if not is_valid_email(email):
+    if not is_valid_email(email_entry.get()):
         label.configure(text="Invalid email. Please use an email ending with .com")
         return
 
-    # Attempt to find the user and verify password
-    user = get_user_by_email(conn, email)
-    if user and user.password == password:
+    user = get_user_by_email(conn, email_entry.get())
+    if user and user.password == password_entry.get():
         print("Successful login.")
         global current_user
         current_user = user
@@ -90,30 +87,8 @@ def login_window(root_start):
 
     root.mainloop()
 
-def register(email_entry, username_entry, password_entry, root):
-    email = email_entry.get()
-    username = username_entry.get()
-    password = password_entry.get()
-
-    # Check if any field is empty
-    if email == "" or username == "" or password == "":
-        error_label.configure(text="Please fill in all fields.")
-        return
-
-    # Validate email format
-    if not is_valid_email(email):
-        error_label.configure(text="Invalid email. Please use an email ending with .com")
-        return
-
-    # Attempt to add the user
-    new_user = add_user(conn, username, email, password)
-    if new_user:
-        error_label.configure(text="Account created successfully!", text_color="green")
-    else:
-        error_label.configure(text="Email already associated with an account!", text_color="red")
-
-
 def register_window():
+
     root = customtkinter.CTk()
     root.geometry("500x350")
     root.title("SecureX - Register")
@@ -133,10 +108,6 @@ def register_window():
     entry3 = customtkinter.CTkEntry(master=frame, placeholder_text="Password", show="*")
     entry3.pack(pady=12, padx=10)
 
-    global error_label  # Define error_label globally to update it in the register function
-    error_label = customtkinter.CTkLabel(master=frame, text="", text_color="red")
-    error_label.pack(pady=6, padx=10)
-
     button = customtkinter.CTkButton(master=frame, text="Register", command=lambda: register(entry1, entry2, entry3, root))
     button.pack(pady=12, padx=10)
 
@@ -145,8 +116,8 @@ def register_window():
 
     root.mainloop()
 
-
 def home_page(login_root):
+    global current_user
     login_root.destroy()
 
     root = customtkinter.CTk()
@@ -161,7 +132,8 @@ def home_page(login_root):
     left_frame = customtkinter.CTkFrame(master=main_frame, width=200, height=600, corner_radius=10, border_width=0, fg_color="#1c1c1c")
     left_frame.pack(side="left", fill="y", padx=(0, 2))
 
-    welcome_label = customtkinter.CTkLabel(master=left_frame, text="Welcome!", font=("Verdana", 18, "bold"))
+    welcome_text = "Welcome " + current_user.username + "!"
+    welcome_label = customtkinter.CTkLabel(master=left_frame, text=welcome_text, font=("Verdana", 18, "bold"))
     welcome_label.pack(anchor="nw", pady=10, padx=10)
 
     # Define transparent button style
@@ -193,40 +165,60 @@ def home_page(login_root):
     right_frame = customtkinter.CTkFrame(master=main_frame, corner_radius=10)
     right_frame.pack(side="left", fill="both", expand=True)
 
-    new_label = customtkinter.CTkLabel(master=right_frame, text="Analyze a new project or view reports.", font=("Helvetica", 20))
-    new_label.pack(pady=20, padx=10)
+    new_label = customtkinter.CTkLabel(master=right_frame, text="Recent scans", font=("Verdana", 18, "bold"))
+    new_label.pack(anchor="nw", padx=10, pady=10)
 
     root.mainloop()
 
+def register(email_entry, username_entry, password_entry, root):
+    email = email_entry.get()
+    username = username_entry.get()
+    password = password_entry.get()
 
-scores_data = [
-    {
-        "project_name": "Project Alpha",
-        "score": random.randint(50, 100),
-        "vulnerabilities": random.randint(0, 10),
-        "detection_method": "SAST"
-    },
-    {
-        "project_name": "Project Beta",
-        "score": random.randint(50, 100),
-        "vulnerabilities": random.randint(0, 10),
-        "detection_method": "DAST"
-    }
-]
+    new_user = add_user(conn, username, email, password)
+    if new_user:
+        succes_window = customtkinter.CTkToplevel(root)
+        succes_window.geometry("300x300")
 
-def get_user_scores_data():
-    global current_user, scores_data
-    scores_data = []  # Clear the list to avoid duplicates
+        frame = customtkinter.CTkFrame(master=succes_window)
+        frame.pack(fill="both", expand=True)
+
+        label = customtkinter.CTkLabel(master=frame, text="Account created successfully!", font=("Verdana", 18))
+        label.pack(padx=10, pady=10)
+    else:
+        failure_window = customtkinter.CTkToplevel(root)
+        failure_window.geometry("300x300")
+
+        frame = customtkinter.CTkFrame(master=failure_window)
+        frame.pack(fill="both", expand=True)
+
+        label = customtkinter.CTkLabel(master=frame, text="Email already associated with an account!", font=("Verdana", 18))
+        label.pack(padx=10, pady=10)
+
+    def close():
+        succes_window.destroy()
+        succes_window.update()
+        root.destroy()
+        root.update()
+
+    button = customtkinter.CTkButton(master=frame, text="Ok", font=("Verdana", 18), command=close)
+    button.pack(padx=10, pady=10)
+
+
+def get_user_scores_data(scores_data):
+    global current_user
     projects = get_projects_by_user(conn, current_user.user_id)
+    print(f"Number of projects: {len(projects)}")
     for project in projects:
         reports = get_reports_by_project(conn, project.project_id)
         for report in reports:
             score_data = {
-                "project_name": project.project_name,
-                "score": report.score,
-                "vulnerabilities": report.num_vulnerabilities,
-                "detection_method": report.detection_method
-            }
+            "project_id": project.project_id,
+            "project_name": project.project_name,
+            "score": report.score,
+            "vulnerabilities": report.num_vulnerabilities,
+            "detection_method": report.detection_method
+        }
             scores_data.append(score_data)
 
 def scores_page():
@@ -283,108 +275,69 @@ def scores_page():
     def on_leave(event, frame):
         frame.configure(fg_color="transparent")
 
-    def populate_scores():
-        # Clear the right_frame before populating it
-        for widget in right_frame.winfo_children():
-            widget.destroy()
+    scores_data = [
+    {
+        "project_id": 98,
+        "project_name": "Project Alpha",
+        "score": random.randint(50, 100),
+        "vulnerabilities": random.randint(0, 10),
+        "detection_method": "SAST"
+    },
+    {
+        "project_id": 99,
+        "project_name": "Project Beta",
+        "score": random.randint(50, 100),
+        "vulnerabilities": random.randint(0, 10),
+        "detection_method": "DAST"
+    }
+]
+    get_user_scores_data(scores_data)
+    for score in scores_data:
+        current_id = score["project_id"]
+        score_frame = customtkinter.CTkFrame(master=right_frame, fg_color="transparent", border_width=2, border_color="grey", corner_radius=10)
+        score_frame.pack(fill="x", padx=20, pady=20, ipady=20)
 
-        scores_label = customtkinter.CTkLabel(master=right_frame, text="My Scores", font=("Verdana", 24, "bold"))
-        scores_label.pack(anchor="nw", padx=10, pady=20)
+        score_frame.bind("<Enter>", lambda e, f=score_frame: on_enter(e, f))
+        score_frame.bind("<Leave>", lambda e, f=score_frame: on_leave(e, f))
 
-        get_user_scores_data()
-        for score in scores_data:
-            score_frame = customtkinter.CTkFrame(master=right_frame, fg_color="transparent", border_width=2, border_color="grey", corner_radius=10)
-            score_frame.pack(fill="x", padx=20, pady=20, ipady=20)
+        project_label = customtkinter.CTkLabel(master=score_frame, text=score["project_name"], font=("Helvetica", 20, "bold"))
+        project_label.pack(side="left", padx=20)
 
-            score_frame.bind("<Enter>", lambda e, f=score_frame: on_enter(e, f))
-            score_frame.bind("<Leave>", lambda e, f=score_frame: on_leave(e, f))
+        progress_color = "green" if score["score"] > 90 else "orange" if score["score"] > 70 else "red"
+        progress_bar = customtkinter.CTkProgressBar(master=score_frame, width=250, fg_color="#E0E0E0", progress_color=progress_color)
+        progress_bar.set(score["score"] / 100)
+        progress_bar.pack(side="left", padx=20)
 
-            project_label = customtkinter.CTkLabel(master=score_frame, text=score["project_name"], font=("Helvetica", 20, "bold"))
-            project_label.pack(side="left", padx=20)
+        score_frame_inner = customtkinter.CTkFrame(master=score_frame, fg_color="transparent")
+        score_frame_inner.pack(side="left", padx=20)
 
-            progress_color = "green" if score["score"] > 90 else "orange" if score["score"] > 70 else "red"
-            progress_bar = customtkinter.CTkProgressBar(master=score_frame, width=250, fg_color="#E0E0E0", progress_color=progress_color)
-            progress_bar.set(score["score"] / 100)
-            progress_bar.pack(side="left", padx=20)
+        score_label = customtkinter.CTkLabel(master=score_frame_inner, text=f"{score['score']}/100", font=("Helvetica", 18))
+        score_label.pack()
+        score_text_label = customtkinter.CTkLabel(master=score_frame_inner, text="Score", font=("Helvetica", 18, "bold"))
+        score_text_label.pack()
 
-            score_frame_inner = customtkinter.CTkFrame(master=score_frame, fg_color="transparent")
-            score_frame_inner.pack(side="left", padx=20)
+        vulnerabilities_frame = customtkinter.CTkFrame(master=score_frame, fg_color="transparent")
+        vulnerabilities_frame.pack(side="left", padx=20)
 
-            score_label = customtkinter.CTkLabel(master=score_frame_inner, text=f"{score['score']}/100", font=("Helvetica", 18))
-            score_label.pack()
-            score_text_label = customtkinter.CTkLabel(master=score_frame_inner, text="Score", font=("Helvetica", 18, "bold"))
-            score_text_label.pack()
+        vulnerabilities_value = customtkinter.CTkLabel(master=vulnerabilities_frame, text=score["vulnerabilities"], font=("Helvetica", 18))
+        vulnerabilities_value.pack()
+        vulnerabilities_label = customtkinter.CTkLabel(master=vulnerabilities_frame, text="Vulnerabilities", font=("Helvetica", 18, "bold"))
+        vulnerabilities_label.pack()
 
-            vulnerabilities_frame = customtkinter.CTkFrame(master=score_frame, fg_color="transparent")
-            vulnerabilities_frame.pack(side="left", padx=20)
+        detection_frame = customtkinter.CTkFrame(master=score_frame, fg_color="transparent")
+        detection_frame.pack(side="left", padx=20)
 
-            vulnerabilities_value = customtkinter.CTkLabel(master=vulnerabilities_frame, text=score["vulnerabilities"], font=("Helvetica", 18))
-            vulnerabilities_value.pack()
-            vulnerabilities_label = customtkinter.CTkLabel(master=vulnerabilities_frame, text="Vulnerabilities", font=("Helvetica", 18, "bold"))
-            vulnerabilities_label.pack()
+        detection_value = customtkinter.CTkLabel(master=detection_frame, text=score["detection_method"], font=("Helvetica", 18))
+        detection_value.pack()
+        detection_label = customtkinter.CTkLabel(master=detection_frame, text="Detection", font=("Helvetica", 18, "bold"))
+        detection_label.pack()
 
-            detection_frame = customtkinter.CTkFrame(master=score_frame, fg_color="transparent")
-            detection_frame.pack(side="left", padx=20)
 
-            detection_value = customtkinter.CTkLabel(master=detection_frame, text=score["detection_method"], font=("Helvetica", 18))
-            detection_value.pack()
-            detection_label = customtkinter.CTkLabel(master=detection_frame, text="Detection", font=("Helvetica", 18, "bold"))
-            detection_label.pack()
-
-            # Button to view report details
-            view_report_button = customtkinter.CTkButton(master=score_frame, text="View Report", width=100, height=40, fg_color="grey",
-                                                        command=lambda s=score: view_report_details(s))
-            view_report_button.pack(side="right", padx=20)
-
-    populate_scores()
+        view_report_button = customtkinter.CTkButton(master=score_frame, text="View Report", width=100, height=40, fg_color="grey", command=lambda: display_vulnerabilities_report(current_id))
+        view_report_button.pack(side="right", padx=20)
+        print(current_id)
 
     root.mainloop()
-
-
-def view_report_details(score):
-    # Function to display report details in a new window
-    report_window = customtkinter.CTkToplevel()
-    report_window.geometry("600x400")
-    report_window.title("Report Details")
-
-    frame = customtkinter.CTkFrame(master=report_window)
-    frame.pack(fill="both", expand=True, padx=20, pady=20)
-
-    # Header Frame for Title
-    header_frame = customtkinter.CTkFrame(master=frame)
-    header_frame.pack(fill="x", pady=(0, 20))
-
-    file_label = customtkinter.CTkLabel(master=header_frame, text=f"File: {score['project_name']} Report", font=("Verdana", 20, "bold"))
-    file_label.pack(anchor="center", pady=(10, 0))
-
-    # Content Frame for Details
-    content_frame = customtkinter.CTkFrame(master=frame)
-    content_frame.pack(fill="both", expand=True, pady=10)
-
-    description_label = customtkinter.CTkLabel(master=content_frame, text="Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.", font=("Verdana", 14), wraplength=550)
-    description_label.pack(anchor="w", pady=(5, 15))
-
-    type_label = customtkinter.CTkLabel(master=content_frame, text=f"Type: {score['detection_method']}", font=("Verdana", 14))
-    type_label.pack(anchor="w", pady=(5, 15))
-
-    # Footer Frame for Close Button
-    footer_frame = customtkinter.CTkFrame(master=frame)
-    footer_frame.pack(fill="x", pady=(20, 10))
-
-    def close_window():
-        report_window.destroy()
-
-    close_button = customtkinter.CTkButton(master=footer_frame, text="Close", command=close_window, width=100, height=40, corner_radius=10)
-    close_button.pack(pady=(10, 0))
-
-    report_window.grab_set()  # This makes the window modal, blocking interaction with other windows
-    report_window.mainloop()
-
-
-
-
-
-
 
 def analyze_static(path_entry, build_tool):
     path = path_entry.get()
@@ -480,7 +433,7 @@ def analyze_project_window():
 
     root.mainloop()
 
-# function to run static analysis, add project and report information to database
+# function to run static analysis, add project, vulnerability, and report information to database
 def analyze_static(path_entry, build_tool, name_entry):
     global current_user
 
@@ -494,12 +447,88 @@ def analyze_static(path_entry, build_tool, name_entry):
     project = get_project_by_id(conn, created_project_id)
 
     vulnerabilities = read_infer_json(path)
+    for vulnerability in vulnerabilities:
+        add_vulnerability(conn, created_project_id, vulnerability.type, vulnerability.file, vulnerability.description, vulnerability.bug_function, vulnerability.functions)
+
     score = scoring.calculate_security_score(vulnerabilities, scoring.bug_severity_dict)
     created_report_id = add_report(conn, project.project_id, score, len(vulnerabilities), "SAST")
 
 
     report = get_report_by_id(conn, created_report_id)
     print("Analysis completed")
+
+
+def display_vulnerabilities_report(project_id):
+    root = customtkinter.CTk()
+    root.geometry("800x600")
+    root.title("SecureX - Vulnerabilities Report")
+
+    main_frame = customtkinter.CTkFrame(master=root)
+    main_frame.pack(fill="both", expand=True)
+
+    canvas = Canvas(main_frame, borderwidth=0, background="#2b2b2b")
+    canvas.pack(side="left", fill="both", expand=True)
+
+    scrollbar = Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    scrollable_frame = customtkinter.CTkFrame(master=canvas, fg_color="#2b2b2b")
+    scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
+    center_frame = customtkinter.CTkFrame(master=scrollable_frame, fg_color="#2b2b2b")
+    center_frame.pack(pady=20, padx=20)
+
+    title_label = customtkinter.CTkLabel(master=center_frame, text="Project Vulnerabilities Report", font=("Verdana", 24, "bold"), fg_color="#1f1f1f")
+    title_label.pack(pady=12, padx=10)
+
+    db_vulnerabilities = get_vulnerabilities_by_project(conn, project_id)
+    print(f"Report generated for project {project_id}")
+    for db_vulnerability in db_vulnerabilities:
+        vuln_frame = customtkinter.CTkFrame(master=center_frame, corner_radius=10, border_width=1, fg_color="#404040")
+        vuln_frame.pack(pady=10, padx=10, fill="x")
+
+        vuln_type_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Type: {db_vulnerability.bug_type}", font=("Helvetica", 18, "bold"), fg_color="#333333")
+        vuln_type_label.pack(anchor="w", pady=5, padx=10)
+
+        file_label = customtkinter.CTkLabel(master=vuln_frame, text=f"File: {db_vulnerability.file}", font=("Helvetica", 16), fg_color="#333333")
+        file_label.pack(anchor="w", pady=5, padx=10)
+
+        description_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Description: {db_vulnerability.description}", font=("Helvetica", 14), wraplength=700, fg_color="#333333")
+        description_label.pack(anchor="w", pady=5, padx=10)
+
+        impact_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Impact on Security: HIGH", font=("Helvetica", 14), fg_color="#333333")
+        impact_label.pack(anchor="w", pady=5, padx=10)
+
+    root.mainloop()
+
+# Example vulnerabilities data
+vulnerabilities = [
+    {
+        "type": "SQL Injection",
+        "file": "database.py",
+        "description": "User input used directly in SQL query without sanitization.",
+        "impact": "High"
+    },
+    {
+        "type": "Cross-Site Scripting (XSS)",
+        "file": "views.py",
+        "description": "Unsanitized user input used in web page output.",
+        "impact": "Medium"
+    },
+    {
+        "type": "Buffer Overflow",
+        "file": "main.c",
+        "description": "User input used in strcpy without length check.",
+        "impact": "Critical"
+    }
+]
+
+# Call the function to display the report
+#display_vulnerabilities_report(vulnerabilities)
+
 
 
 #analyze_project_window()
