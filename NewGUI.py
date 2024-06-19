@@ -208,6 +208,7 @@ def register(email_entry, username_entry, password_entry, root):
 def get_user_scores_data(scores_data):
     global current_user
     projects = get_projects_by_user(conn, current_user.user_id)
+    print(f"Number of projects: {len(projects)}")
     for project in projects:
         reports = get_reports_by_project(conn, project.project_id)
         for report in reports:
@@ -292,6 +293,7 @@ def scores_page():
 ]
     get_user_scores_data(scores_data)
     for score in scores_data:
+        current_id = score["project_id"]
         score_frame = customtkinter.CTkFrame(master=right_frame, fg_color="transparent", border_width=2, border_color="grey", corner_radius=10)
         score_frame.pack(fill="x", padx=20, pady=20, ipady=20)
 
@@ -330,7 +332,8 @@ def scores_page():
         detection_label = customtkinter.CTkLabel(master=detection_frame, text="Detection", font=("Helvetica", 18, "bold"))
         detection_label.pack()
 
-        view_report_button = customtkinter.CTkButton(master=score_frame, text="View Report", width=100, height=40, fg_color="grey", command=lambda: display_vulnerabilities_report(score["project_id"]))
+        print(current_id)
+        view_report_button = customtkinter.CTkButton(master=score_frame, text="View Report", width=100, height=40, fg_color="grey", command=lambda: display_vulnerabilities_report(current_id))
         view_report_button.pack(side="right", padx=20)
 
     root.mainloop()
@@ -429,7 +432,7 @@ def analyze_project_window():
 
     root.mainloop()
 
-# function to run static analysis, add project and report information to database
+# function to run static analysis, add project, vulnerability, and report information to database
 def analyze_static(path_entry, build_tool, name_entry):
     global current_user
 
@@ -480,22 +483,22 @@ def display_vulnerabilities_report(project_id):
     title_label = customtkinter.CTkLabel(master=center_frame, text="Project Vulnerabilities Report", font=("Verdana", 24, "bold"), fg_color="#1f1f1f")
     title_label.pack(pady=12, padx=10)
 
-    vulnerabilities = get_vulnerabilities_by_project(conn, project_id)
-
-    for vulnerability in vulnerabilities:
+    db_vulnerabilities = get_vulnerabilities_by_project(conn, project_id)
+    print(f"Report generated for project {project_id}")
+    for db_vulnerability in db_vulnerabilities:
         vuln_frame = customtkinter.CTkFrame(master=center_frame, corner_radius=10, border_width=1, fg_color="#404040")
         vuln_frame.pack(pady=10, padx=10, fill="x")
 
-        vuln_type_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Type: {vulnerability['type']}", font=("Helvetica", 18, "bold"), fg_color="#333333")
+        vuln_type_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Type: {db_vulnerability.bug_type}", font=("Helvetica", 18, "bold"), fg_color="#333333")
         vuln_type_label.pack(anchor="w", pady=5, padx=10)
 
-        file_label = customtkinter.CTkLabel(master=vuln_frame, text=f"File: {vulnerability['file']}", font=("Helvetica", 16), fg_color="#333333")
+        file_label = customtkinter.CTkLabel(master=vuln_frame, text=f"File: {db_vulnerability.file}", font=("Helvetica", 16), fg_color="#333333")
         file_label.pack(anchor="w", pady=5, padx=10)
 
-        description_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Description: {vulnerability['description']}", font=("Helvetica", 14), wraplength=700, fg_color="#333333")
+        description_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Description: {db_vulnerability.description}", font=("Helvetica", 14), wraplength=700, fg_color="#333333")
         description_label.pack(anchor="w", pady=5, padx=10)
 
-        impact_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Impact on Security: {vulnerability['impact']}", font=("Helvetica", 14), fg_color="#333333")
+        impact_label = customtkinter.CTkLabel(master=vuln_frame, text=f"Impact on Security: HIGH", font=("Helvetica", 14), fg_color="#333333")
         impact_label.pack(anchor="w", pady=5, padx=10)
 
     root.mainloop()

@@ -77,6 +77,16 @@ class Report:
         self.detection_method = detection_method
         self.created_at = created_at
 
+class DBVulnerability:
+    def __init__(self, vulnerability_id, project_id, bug_type, file, description, bug_function, functions):
+        self.vulnerability_id = vulnerability_id
+        self.project_id = project_id
+        self.bug_type = bug_type
+        self.file = file
+        self.description = description
+        self.bug_function = bug_function
+        self.functions = functions
+
 def add_user(conn, username, email, password):
     print(f"Attempting to add user: {email}")
     # Check if the email already exists in the database
@@ -124,7 +134,7 @@ def get_vulnerabilities_by_project(conn, project_id):
     cur = conn.cursor()
     cur.execute(sql, (project_id,))
     rows = cur.fetchall()
-    return [Vulnerability(*row) for row in rows]
+    return [DBVulnerability(*row) for row in rows]
 
 def get_reports_by_project(conn, project_id):
     sql = '''SELECT * FROM reports WHERE project_id=?'''
